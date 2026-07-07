@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
 <meta charset="UTF-8">
 <title>Rakuten Pay Merchant DS</title>
 <style>
@@ -5,11 +8,11 @@
     --gray-0:#FFFFFF; --gray-25:#FAF9F8; --gray-50:#F5F3F2; --gray-100:#EDEAE8; --gray-200:#DED9D6;
     --gray-300:#C7C0BC; --gray-400:#A69D97; --gray-500:#857B76; --gray-600:#675F5B; --gray-700:#4C4643;
     --gray-800:#322E2C; --gray-900:#1C1A19;
-    --crimson-50:#FDECEC; --crimson-100:#FBD4D4; --crimson-200:#F5A8A8; --crimson-400:#D94F4F;
-    --crimson-600:#BF0000; --crimson-700:#9E0000; --crimson-800:#7A0000;
-    --green-50:#EAF7EE; --green-600:#167A34;
+    --crimson-50:#FDECEC; --crimson-100:#FBD4D4; --crimson-200:#F5A8A8; --crimson-300:#E97A7A; --crimson-400:#D94F4F;
+    --crimson-500:#C22B2B; --crimson-600:#BF0000; --crimson-700:#9E0000; --crimson-800:#7A0000;
+    --green-50:#EAF7EE; --green-400:#4ADE80; --green-600:#167A34;
     --amber-50:#FDF3E0; --amber-600:#9A6203;
-    --vermilion-50:#FDEEEA; --vermilion-600:#B83A15;
+    --vermilion-50:#FDEEEA; --vermilion-300:#FFA987; --vermilion-600:#B83A15;
     --blue-50:#EAF2FE; --blue-500:#1462C9; --blue-600:#0F4FA3;
 
     --bg-canvas: var(--gray-25);
@@ -29,11 +32,12 @@
     --brand: var(--crimson-600);
     --brand-hover: var(--crimson-700);
     --brand-active: var(--crimson-800);
+    --brand-on-subtle: var(--crimson-600);
     --brand-subtle-bg: var(--crimson-50);
-    --success: var(--green-600); --success-bg: var(--green-50);
-    --warning: var(--amber-600); --warning-bg: var(--amber-50);
-    --error: var(--vermilion-600); --error-bg: var(--vermilion-50);
-    --info: var(--blue-600); --info-bg: var(--blue-50);
+    --success: var(--green-600); --success-bg: var(--green-50); --success-solid: var(--green-600);
+    --warning: var(--amber-600); --warning-bg: var(--amber-50); --warning-solid: var(--amber-600);
+    --error: var(--vermilion-600); --error-bg: var(--vermilion-50); --error-solid: var(--vermilion-600);
+    --info: var(--blue-600); --info-bg: var(--blue-50); --info-solid: var(--blue-600);
 
     --font-ui: "Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
     --font-data: ui-monospace,"Roboto Mono","SFMono-Regular",Menlo,monospace;
@@ -48,6 +52,9 @@
     --dur-instant:100ms; --dur-fast:150ms; --dur-base:200ms; --dur-slow:300ms;
     --ease-standard:cubic-bezier(.2,.8,.2,1); --ease-emph:cubic-bezier(.3,0,.1,1);
   }
+  /* Dark values are duplicated below (media query + [data-theme="dark"]) because this is a
+     static file with no build step. design-tokens.json is the source of truth — if you change
+     a color here, change it there first and copy the value into both dark blocks. */
   @media (prefers-color-scheme: dark){
     :root{
       --bg-canvas: var(--gray-900); --bg-surface: var(--gray-800); --bg-surface-sunken:#141211;
@@ -55,11 +62,11 @@
       --text-primary: var(--gray-50); --text-secondary: var(--gray-300); --text-tertiary: var(--gray-400);
       --text-disabled: var(--gray-600); --text-link:#6FA6F5;
       --border-default: var(--gray-700); --border-strong: var(--gray-500); --border-focus:#6FA6F5;
-      --brand:#D94F4F; --brand-hover:#F5A8A8; --brand-active:#FBD4D4; --brand-subtle-bg:rgba(191,0,0,.16);
-      --success:#4CAF6B; --success-bg:rgba(30,142,62,.16);
-      --warning:#E0A438; --warning-bg:rgba(184,117,3,.18);
-      --error:#E8703F; --error-bg:rgba(214,73,31,.18);
-      --info:#6FA6F5; --info-bg:rgba(20,98,201,.18);
+      --brand:#C22B2B; --brand-hover:#E97A7A; --brand-active:#F5A8A8; --brand-on-subtle:#E97A7A; --brand-subtle-bg:rgba(191,0,0,.16);
+      --success:#4ADE80; --success-bg:rgba(30,142,62,.16); --success-solid:#167A34;
+      --warning:#E0A438; --warning-bg:rgba(184,117,3,.18); --warning-solid:#9A6203;
+      --error:#FFA987; --error-bg:rgba(214,73,31,.18); --error-solid:#B83A15;
+      --info:#6FA6F5; --info-bg:rgba(20,98,201,.18); --info-solid:#0F4FA3;
     }
   }
   :root[data-theme="dark"]{
@@ -68,11 +75,11 @@
     --text-primary: var(--gray-50); --text-secondary: var(--gray-300); --text-tertiary: var(--gray-400);
     --text-disabled: var(--gray-600); --text-link:#6FA6F5;
     --border-default: var(--gray-700); --border-strong: var(--gray-500); --border-focus:#6FA6F5;
-    --brand:#D94F4F; --brand-hover:#F5A8A8; --brand-active:#FBD4D4; --brand-subtle-bg:rgba(191,0,0,.16);
-    --success:#4CAF6B; --success-bg:rgba(30,142,62,.16);
-    --warning:#E0A438; --warning-bg:rgba(184,117,3,.18);
-    --error:#E8703F; --error-bg:rgba(214,73,31,.18);
-    --info:#6FA6F5; --info-bg:rgba(20,98,201,.18);
+    --brand:#C22B2B; --brand-hover:#E97A7A; --brand-active:#F5A8A8; --brand-on-subtle:#E97A7A; --brand-subtle-bg:rgba(191,0,0,.16);
+    --success:#4ADE80; --success-bg:rgba(30,142,62,.16); --success-solid:#167A34;
+    --warning:#E0A438; --warning-bg:rgba(184,117,3,.18); --warning-solid:#9A6203;
+    --error:#FFA987; --error-bg:rgba(214,73,31,.18); --error-solid:#B83A15;
+    --info:#6FA6F5; --info-bg:rgba(20,98,201,.18); --info-solid:#0F4FA3;
   }
   :root[data-theme="light"]{
     --bg-canvas: var(--gray-25); --bg-surface: var(--gray-0); --bg-surface-sunken: var(--gray-50);
@@ -81,11 +88,11 @@
     --text-disabled: var(--gray-300); --text-link: var(--blue-600);
     --border-default: var(--gray-200); --border-strong: var(--gray-400); --border-focus: var(--blue-500);
     --brand: var(--crimson-600); --brand-hover: var(--crimson-700); --brand-active: var(--crimson-800);
-    --brand-subtle-bg: var(--crimson-50);
-    --success: var(--green-600); --success-bg: var(--green-50);
-    --warning: var(--amber-600); --warning-bg: var(--amber-50);
-    --error: var(--vermilion-600); --error-bg: var(--vermilion-50);
-    --info: var(--blue-600); --info-bg: var(--blue-50);
+    --brand-on-subtle: var(--crimson-600); --brand-subtle-bg: var(--crimson-50);
+    --success: var(--green-600); --success-bg: var(--green-50); --success-solid: var(--green-600);
+    --warning: var(--amber-600); --warning-bg: var(--amber-50); --warning-solid: var(--amber-600);
+    --error: var(--vermilion-600); --error-bg: var(--vermilion-50); --error-solid: var(--vermilion-600);
+    --info: var(--blue-600); --info-bg: var(--blue-50); --info-solid: var(--blue-600);
   }
 
   *{box-sizing:border-box;}
@@ -94,7 +101,7 @@
     margin:0; background:var(--bg-canvas); color:var(--text-primary);
     font-family:var(--font-ui); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased;
   }
-  ::selection{background:var(--brand-subtle-bg); color:var(--brand);}
+  ::selection{background:var(--brand-subtle-bg); color:var(--brand-on-subtle);}
   a{color:var(--text-link);}
   :focus-visible{outline:2px solid var(--border-focus); outline-offset:2px; border-radius:2px;}
   @media (prefers-reduced-motion: reduce){
@@ -131,7 +138,7 @@
     text-decoration:none; transition:background var(--dur-fast) var(--ease-standard), color var(--dur-fast);
   }
   .nav-link:hover{background:var(--bg-surface-sunken); color:var(--text-primary);}
-  .nav-link.active{background:var(--brand-subtle-bg); color:var(--brand); font-weight:600;}
+  .nav-link.active{background:var(--brand-subtle-bg); color:var(--brand-on-subtle); font-weight:600;}
   .theme-toggle{
     margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:var(--sp-2);
     padding:var(--sp-2) var(--sp-3); border:1px solid var(--border-default); border-radius:var(--radius-md);
@@ -146,7 +153,7 @@
   .main{padding:var(--sp-6) var(--sp-7) var(--sp-8); max-width:1180px;}
   section{margin-bottom:var(--sp-8); scroll-margin-top:var(--sp-4);}
   section > .section-head{margin-bottom:var(--sp-5); padding-bottom:var(--sp-4); border-bottom:1px solid var(--border-default);}
-  section > .section-head .eyebrow{color:var(--brand);}
+  section > .section-head .eyebrow{color:var(--brand-on-subtle);}
   .lede{color:var(--text-secondary); max-width:64ch; margin-top:var(--sp-2) !important;}
 
   .grid{display:grid; gap:var(--sp-5);}
@@ -193,7 +200,7 @@
   .btn-primary:hover{background:var(--brand-hover);}
   .btn-secondary{background:var(--bg-surface); color:var(--text-primary); border-color:var(--border-strong);}
   .btn-secondary:hover{background:var(--bg-surface-sunken);}
-  .btn-ghost{background:transparent; color:var(--brand); border-color:transparent;}
+  .btn-ghost{background:transparent; color:var(--brand-on-subtle); border-color:transparent;}
   .btn-ghost:hover{background:var(--brand-subtle-bg);}
   .btn-danger{background:var(--error); color:#fff;}
   .btn-danger:hover{filter:brightness(.92);}
@@ -231,7 +238,7 @@
 
   .chip{display:inline-flex; align-items:center; gap:6px; font-size:13px; padding:5px 12px; border-radius:var(--radius-full); background:var(--bg-surface-sunken); border:1px solid var(--border-default); color:var(--text-primary);}
   .chip button{border:none; background:none; color:var(--text-tertiary); cursor:pointer; font-size:13px; line-height:1; padding:0;}
-  .chip.selected{background:var(--brand-subtle-bg); border-color:var(--brand); color:var(--brand);}
+  .chip.selected{background:var(--brand-subtle-bg); border-color:var(--brand-on-subtle); color:var(--brand-on-subtle);}
 
   .tag{display:inline-flex; align-items:center; font-size:11px; font-weight:700; padding:2px 8px; border-radius:var(--radius-sm); letter-spacing:.02em;}
   .tag-owner{background:var(--gray-900); color:#fff;}
@@ -248,11 +255,11 @@
 
   .tabs{display:flex; gap:var(--sp-4); border-bottom:1px solid var(--border-default);}
   .tabs .tab{padding:8px 2px; font-size:13.5px; color:var(--text-secondary); border-bottom:2px solid transparent; cursor:pointer; margin-bottom:-1px;}
-  .tabs .tab.active{color:var(--brand); border-color:var(--brand); font-weight:600;}
+  .tabs .tab.active{color:var(--brand-on-subtle); border-color:var(--brand-on-subtle); font-weight:600;}
 
   .sidenav-demo{width:180px; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:var(--sp-2); display:flex; flex-direction:column; gap:2px;}
   .sidenav-demo a{padding:8px 10px; border-radius:var(--radius-sm); font-size:13px; color:var(--text-secondary); text-decoration:none;}
-  .sidenav-demo a.active{background:var(--brand-subtle-bg); color:var(--brand); font-weight:600;}
+  .sidenav-demo a.active{background:var(--brand-subtle-bg); color:var(--brand-on-subtle); font-weight:600;}
 
   .header-demo{width:100%; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:10px 16px; display:flex; align-items:center; justify-content:space-between;}
   .breadcrumb{display:flex; gap:6px; font-size:12.5px; color:var(--text-tertiary); align-items:center;}
@@ -264,8 +271,8 @@
   .drawer-demo{width:220px; height:180px; background:var(--bg-surface); box-shadow:var(--shadow-l); border-radius:var(--radius-lg) 0 0 var(--radius-lg); padding:var(--sp-4); position:relative;}
 
   .toast{display:flex; gap:10px; align-items:flex-start; background:var(--gray-900); color:#fff; padding:12px 16px; border-radius:var(--radius-md); box-shadow:var(--shadow-m); font-size:13px; max-width:280px;}
-  .toast.success{background:var(--success);}
-  .toast.error{background:var(--error);}
+  .toast.success{background:var(--success-solid);}
+  .toast.error{background:var(--error-solid);}
 
   .tooltip-demo{position:relative; display:inline-block;}
   .tooltip-bubble{background:var(--gray-900); color:#fff; font-size:11.5px; padding:6px 10px; border-radius:var(--radius-sm); position:absolute; bottom:130%; left:50%; transform:translateX(-50%); white-space:nowrap;}
@@ -285,7 +292,9 @@
   .pager button.active{background:var(--brand); border-color:var(--brand); color:#fff;}
 
   .search-demo{display:flex; align-items:center; gap:8px; border:1px solid var(--border-strong); border-radius:var(--radius-full); padding:8px 14px; background:var(--bg-surface); width:220px;}
+  .search-demo:focus-within{border-color:var(--border-focus); box-shadow:0 0 0 3px color-mix(in srgb, var(--border-focus) 25%, transparent);}
   .search-demo input{border:none; outline:none; font:inherit; font-size:13.5px; flex:1; background:none; color:var(--text-primary);}
+  .search-demo input:focus-visible{outline:none;}
 
   .filter-bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
 
@@ -297,7 +306,7 @@
 
   .confirm-demo{width:100%; max-width:300px; background:var(--bg-surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-l); padding:var(--sp-4); border-top:3px solid var(--error);}
   .storeswitch{display:flex; align-items:center; gap:8px; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:8px 12px; background:var(--bg-surface); font-size:13px; cursor:pointer;}
-  .storeswitch .avatar{width:26px;height:26px;border-radius:50%;background:var(--brand-subtle-bg); color:var(--brand); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;}
+  .storeswitch .avatar{width:26px;height:26px;border-radius:50%;background:var(--brand-subtle-bg); color:var(--brand-on-subtle); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;}
 
   .deposit-card{width:264px; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:var(--sp-4); box-shadow:var(--shadow-xs);}
   .deposit-card .row2{display:flex; justify-content:space-between; align-items:baseline; margin-top:var(--sp-2); gap:8px;}
@@ -321,10 +330,10 @@
 
   .pattern-card{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:var(--sp-4); box-shadow:var(--shadow-xs);}
   .pattern-card h4{font-size:14.5px; margin-bottom:6px;}
-  .pattern-card .tag-num{display:inline-flex; width:22px; height:22px; border-radius:50%; background:var(--brand-subtle-bg); color:var(--brand); align-items:center; justify-content:center; font-size:11px; font-weight:700; margin-right:8px;}
+  .pattern-card .tag-num{display:inline-flex; width:22px; height:22px; border-radius:50%; background:var(--brand-subtle-bg); color:var(--brand-on-subtle); align-items:center; justify-content:center; font-size:11px; font-weight:700; margin-right:8px;}
 
   .a11y-item{display:flex; gap:var(--sp-3); padding:var(--sp-4) 0; border-bottom:1px solid var(--border-default);}
-  .a11y-item .ic{flex:none; width:36px;height:36px;border-radius:50%;background:var(--brand-subtle-bg); color:var(--brand); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;}
+  .a11y-item .ic{flex:none; width:36px;height:36px;border-radius:50%;background:var(--brand-subtle-bg); color:var(--brand-on-subtle); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;}
 
   .token-tabs{display:flex; gap:8px; margin-bottom:var(--sp-3);}
   .token-tabs button{font:inherit; font-size:12.5px; padding:6px 14px; border-radius:var(--radius-full); border:1px solid var(--border-default); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer;}
@@ -333,7 +342,8 @@
   .copytoast{position:fixed; bottom:24px; right:24px; background:var(--gray-900); color:#fff; padding:10px 16px; border-radius:var(--radius-md); font-size:13px; box-shadow:var(--shadow-m); opacity:0; transform:translateY(8px); transition:opacity var(--dur-base), transform var(--dur-base); pointer-events:none; z-index:50;}
   .copytoast.show{opacity:1; transform:translateY(0);}
 </style>
-
+</head>
+<body>
 <div class="shell">
   <aside class="sidebar" id="sidebar">
     <div class="brand-mark">
@@ -631,7 +641,7 @@
       <div class="section-head">
         <span class="kicker">03</span>
         <h2 class="text-h1">Components</h2>
-        <p class="text-body lede">Atomic Designの Elements〜Components 層。全26種の指定コンポーネントに加え、加盟店ドメイン固有の9種を追加している。各カードは Purpose / Anatomy / Variants / States / Usage / Do・Don't を統一フォーマットで記載。</p>
+        <p class="text-body lede">Atomic Designの Elements〜Components 層。指定26種＋加盟店ドメイン固有9種＝35項目を、関連の深いもの（Checkbox/Radio/Switch、Navigation/Sidebar等）はカードをまとめて掲載しており、カード数は31枚。各カードは Purpose / Anatomy / Variants / States / Usage / Do・Don't を統一フォーマットで記載。</p>
       </div>
 
       <h3 id="c-inputs" class="text-h2" style="margin-bottom:var(--sp-4);">入力・操作</h3>
@@ -1070,8 +1080,8 @@
         <div class="comp-head"><h3>Toast</h3><span class="purpose">操作結果を一過性に伝える（ページ遷移させない）</span></div>
         <div class="comp-body">
           <div class="comp-preview" style="flex-direction:column; gap:10px;">
-            <div class="toast success">入金を申請しました</div>
-            <div class="toast error">決済の取消に失敗しました。もう一度お試しください</div>
+            <div class="toast success" role="status">入金を申請しました</div>
+            <div class="toast error" role="alert">決済の取消に失敗しました。もう一度お試しください</div>
           </div>
           <div class="comp-doc">
             <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>ボタンのラベルと同じ語彙で結果を言う（「申請する」→「申請しました」）</li><li>成功は4秒で自動消滅、エラーは手動で閉じるまで残す</li></ul></span></div>
@@ -1338,7 +1348,7 @@
         <div class="ic">AA</div>
         <div>
           <h4 class="text-h3">WCAG AA</h4>
-          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">通常テキストはコントラスト比4.5:1以上、金額・状態Badgeなど判断に直結する要素は 7:1 相当を目標値とする。全ページで <code>lang="ja"</code> と見出し階層（h1→h2→h3の飛び越え禁止）を維持。</p>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">通常テキストはコントラスト比4.5:1以上を最低基準とし、金額・状態Badgeなど判断に直結する要素は原則6:1以上を目標とする（Light/Dark両テーマで実測し、design-tokens.jsonの各トークンに検証値を$descriptionとして記載）。全ページで <code>lang="ja"</code> と見出し階層（h1→h2→h3の飛び越え禁止）を維持。</p>
         </div>
       </div>
       <div class="a11y-item">
@@ -1366,7 +1376,7 @@
         <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2"/></svg></div>
         <div>
           <h4 class="text-h3">Contrast</h4>
-          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">Brand crimson（#BF0000 系統）は白背景での本文使用時に太字・16px以上での運用に限定し、細字での長文には使わない。Dark themeのBrandトーンは可読性のため crimson-400 に引き上げ、600番台はDark背景では使用しない。</p>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">Brand crimson（#BF0000 系統）は白背景での本文使用時に太字・16px以上での運用に限定し、細字での長文には使わない。Dark themeでは「塗り（Solid-fill）」と「淡色背景上のテキスト（on-subtle）」でトーンを分離しており、塗りは crimson-500（白文字コントラスト5.72:1）、on-subtleテキストは crimson-300（brand-subtle-bg上で4.70:1）を使用する。600番台はDark背景では使用しない。</p>
         </div>
       </div>
     </section>
@@ -1375,7 +1385,21 @@
       <div class="section-head">
         <span class="kicker">06</span>
         <h2 class="text-h1">Design Tokens</h2>
-        <p class="text-body lede">W3C Design Tokens（DTCG）形式のJSON。Tokens Studio for Figma でインポートすれば Figma Variables に、Style Dictionary を通せば Storybook / CSS Custom Properties に変換できる構造。<code>{group.token}</code> によるエイリアス参照を含む。</p>
+        <p class="text-body lede">W3C Design Tokens（DTCG）形式のJSON。Tokens Studio for Figma でインポートすれば Figma Variables に、Style Dictionary を通せば Storybook / CSS Custom Properties に変換できる構造。<code>{group.token}</code> によるエイリアス参照を含む。<b>design-tokens.json を唯一のソースとし、下記JSON・index.html内のCSSカスタムプロパティはこのファイルの値と一致させること。</b></p>
+      </div>
+      <div class="panel" style="margin-bottom:var(--sp-5);">
+        <span class="text-overline">Tokens Studio / Style Dictionary 設定メモ</span>
+        <ul class="text-body-s" style="color:var(--text-secondary); margin:8px 0 0; padding-left:18px;">
+          <li><code>color.semantic.light</code> / <code>color.semantic.dark</code> は別々の変数ではなく、Tokens StudioのTheme機能で「1つのVariable Collectionに対するLight/Dark2 Mode」として設定する（Figma Variablesの Mode に対応）。</li>
+          <li>CSS変数名はJSONのsemanticキーをそのまま使わず短縮している。Style Dictionaryのnaming transformは下表の対応で設定する。</li>
+        </ul>
+        <table class="t" style="margin-top:var(--sp-3);">
+          <tr><th>JSON（design-tokens.json）</th><th>CSS Custom Property</th><th>役割</th></tr>
+          <tr><td class="text-data">color.semantic.*.brand-primary</td><td class="text-data">--brand</td><td>Solid-fill（Button/Numpad確定キー等、白文字と組む）</td></tr>
+          <tr><td class="text-data">color.semantic.*.brand-primary-on-subtle</td><td class="text-data">--brand-on-subtle</td><td>brand-subtle-bg等の淡色背景上のテキスト・アクセント</td></tr>
+          <tr><td class="text-data">color.semantic.*.success / warning / error / info</td><td class="text-data">--success / --warning / --error / --info</td><td>各-bgと対で使う on-subtle テキスト（Badge, Do/Don't等）</td></tr>
+          <tr><td class="text-data">color.semantic.*.success-solid 等</td><td class="text-data">--success-solid 等</td><td>Toast等、白文字と組むSolid-fill</td></tr>
+        </table>
       </div>
       <div class="token-actions">
         <button class="btn btn-secondary btn-sm" onclick="copyTokens()">JSONをコピー</button>
@@ -1411,134 +1435,183 @@
         "800": { "$value": "#322E2C", "$type": "color" },
         "900": { "$value": "#1C1A19", "$type": "color" }
       },
-      "green":  { "50": { "$value": "#EAF7EE", "$type": "color" }, "500": { "$value": "#1E8E3E", "$type": "color" }, "600": { "$value": "#167A34", "$type": "color" }, "700": { "$value": "#0F5C27", "$type": "color" } },
-      "amber":  { "50": { "$value": "#FDF3E0", "$type": "color" }, "500": { "$value": "#B87503", "$type": "color" }, "600": { "$value": "#9A6203", "$type": "color" }, "700": { "$value": "#7A4E02", "$type": "color" } },
+      "green": {
+        "50":  { "$value": "#EAF7EE", "$type": "color" },
+        "400": { "$value": "#4ADE80", "$type": "color", "$description": "Dark-theme on-subtle text tone — brightened so success text clears 4.5:1 against success-bg on a dark surface." },
+        "500": { "$value": "#1E8E3E", "$type": "color" },
+        "600": { "$value": "#167A34", "$type": "color" },
+        "700": { "$value": "#0F5C27", "$type": "color" }
+      },
+      "amber": {
+        "50":  { "$value": "#FDF3E0", "$type": "color" },
+        "500": { "$value": "#B87503", "$type": "color" },
+        "600": { "$value": "#9A6203", "$type": "color" },
+        "700": { "$value": "#7A4E02", "$type": "color" }
+      },
       "vermilion": {
-        "50": { "$value": "#FDEEEA", "$type": "color" }, "500": { "$value": "#D6491F", "$type": "color" }, "600": { "$value": "#B83A15", "$type": "color" }, "700": { "$value": "#942D0F", "$type": "color" },
+        "50":  { "$value": "#FDEEEA", "$type": "color" },
+        "300": { "$value": "#FFA987", "$type": "color", "$description": "Dark-theme on-subtle text tone — brightened so error text clears 4.5:1 against error-bg on a dark surface." },
+        "500": { "$value": "#D6491F", "$type": "color" },
+        "600": { "$value": "#B83A15", "$type": "color" },
+        "700": { "$value": "#942D0F", "$type": "color" },
         "$description": "Error hue. Deliberately shifted orange-red — distinct from brand crimson so 'error' is never confused with 'brand/primary'."
       },
-      "blue": { "50": { "$value": "#EAF2FE", "$type": "color" }, "500": { "$value": "#1462C9", "$type": "color" }, "600": { "$value": "#0F4FA3", "$type": "color" }, "700": { "$value": "#0B3D80", "$type": "color" } }
+      "blue": {
+        "50":  { "$value": "#EAF2FE", "$type": "color" },
+        "500": { "$value": "#1462C9", "$type": "color" },
+        "600": { "$value": "#0F4FA3", "$type": "color" },
+        "700": { "$value": "#0B3D80", "$type": "color" }
+      }
     },
     "semantic": {
+      "$description": "light/dark は Tokens Studio for Figma で単一の Variable Collection に Light/Dark の2 Mode として設定すること（別々の変数として扱わない）。Style Dictionary 側は theme=light/dark をビルドターゲットの次元として渡す。",
       "light": {
-        "bg-canvas": { "$value": "{color.primitive.gray.25}", "$type": "color" },
-        "bg-surface": { "$value": "{color.primitive.gray.0}", "$type": "color" },
-        "bg-surface-sunken": { "$value": "{color.primitive.gray.50}", "$type": "color" },
-        "bg-inverse": { "$value": "{color.primitive.gray.900}", "$type": "color" },
-        "bg-overlay-scrim": { "$value": "rgba(28,26,25,0.48)", "$type": "color" },
-        "text-primary": { "$value": "{color.primitive.gray.900}", "$type": "color" },
-        "text-secondary": { "$value": "{color.primitive.gray.600}", "$type": "color" },
-        "text-tertiary": { "$value": "{color.primitive.gray.500}", "$type": "color" },
-        "text-disabled": { "$value": "{color.primitive.gray.300}", "$type": "color" },
-        "text-on-brand": { "$value": "{color.primitive.gray.0}", "$type": "color" },
-        "text-link": { "$value": "{color.primitive.blue.600}", "$type": "color" },
-        "border-default": { "$value": "{color.primitive.gray.200}", "$type": "color" },
-        "border-strong": { "$value": "{color.primitive.gray.400}", "$type": "color" },
-        "border-focus": { "$value": "{color.primitive.blue.500}", "$type": "color" },
-        "brand-primary": { "$value": "{color.primitive.crimson.600}", "$type": "color" },
-        "brand-primary-hover": { "$value": "{color.primitive.crimson.700}", "$type": "color" },
-        "brand-primary-active": { "$value": "{color.primitive.crimson.800}", "$type": "color" },
-        "brand-subtle-bg": { "$value": "{color.primitive.crimson.50}", "$type": "color" },
-        "success": { "$value": "{color.primitive.green.600}", "$type": "color" },
-        "success-bg": { "$value": "{color.primitive.green.50}", "$type": "color" },
-        "warning": { "$value": "{color.primitive.amber.600}", "$type": "color" },
-        "warning-bg": { "$value": "{color.primitive.amber.50}", "$type": "color" },
-        "error": { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
-        "error-bg": { "$value": "{color.primitive.vermilion.50}", "$type": "color" },
-        "info": { "$value": "{color.primitive.blue.600}", "$type": "color" },
-        "info-bg": { "$value": "{color.primitive.blue.50}", "$type": "color" }
+        "bg-canvas":          { "$value": "{color.primitive.gray.25}", "$type": "color" },
+        "bg-surface":         { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "bg-surface-sunken":  { "$value": "{color.primitive.gray.50}", "$type": "color" },
+        "bg-inverse":         { "$value": "{color.primitive.gray.900}", "$type": "color" },
+        "bg-overlay-scrim":   { "$value": "rgba(28,26,25,0.48)", "$type": "color" },
+        "text-primary":       { "$value": "{color.primitive.gray.900}", "$type": "color" },
+        "text-secondary":     { "$value": "{color.primitive.gray.600}", "$type": "color" },
+        "text-tertiary":      { "$value": "{color.primitive.gray.500}", "$type": "color" },
+        "text-disabled":      { "$value": "{color.primitive.gray.300}", "$type": "color" },
+        "text-on-brand":      { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "text-link":          { "$value": "{color.primitive.blue.600}", "$type": "color" },
+        "border-default":     { "$value": "{color.primitive.gray.200}", "$type": "color" },
+        "border-strong":      { "$value": "{color.primitive.gray.400}", "$type": "color" },
+        "border-focus":       { "$value": "{color.primitive.blue.500}", "$type": "color" },
+        "brand-primary":          { "$value": "{color.primitive.crimson.600}", "$type": "color", "$description": "Solid-fill role (Button/Toast等、白文字と組む前提)。" },
+        "brand-primary-hover":    { "$value": "{color.primitive.crimson.700}", "$type": "color" },
+        "brand-primary-active":   { "$value": "{color.primitive.crimson.800}", "$type": "color" },
+        "brand-primary-on-subtle":{ "$value": "{color.primitive.crimson.600}", "$type": "color", "$description": "brand-subtle-bg等の淡色背景に載せるテキスト/アクセント用ロール。light theme ではbrand-primaryと同値。" },
+        "brand-subtle-bg":      { "$value": "{color.primitive.crimson.50}", "$type": "color" },
+        "success":       { "$value": "{color.primitive.green.600}", "$type": "color", "$description": "on-subtle役割（Badge/Do-Dont等、success-bgと対で使用）。" },
+        "success-bg":    { "$value": "{color.primitive.green.50}", "$type": "color" },
+        "success-solid": { "$value": "{color.primitive.green.600}", "$type": "color", "$description": "Solid-fill役割（Toast等、白文字と組む前提）。" },
+        "warning":       { "$value": "{color.primitive.amber.600}", "$type": "color" },
+        "warning-bg":    { "$value": "{color.primitive.amber.50}", "$type": "color" },
+        "warning-solid": { "$value": "{color.primitive.amber.600}", "$type": "color" },
+        "error":         { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
+        "error-bg":      { "$value": "{color.primitive.vermilion.50}", "$type": "color" },
+        "error-solid":   { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
+        "info":          { "$value": "{color.primitive.blue.600}", "$type": "color" },
+        "info-bg":       { "$value": "{color.primitive.blue.50}", "$type": "color" },
+        "info-solid":    { "$value": "{color.primitive.blue.600}", "$type": "color" }
       },
       "dark": {
-        "bg-canvas": { "$value": "{color.primitive.gray.900}", "$type": "color" },
-        "bg-surface": { "$value": "{color.primitive.gray.800}", "$type": "color" },
-        "bg-surface-sunken": { "$value": "#141211", "$type": "color" },
-        "bg-inverse": { "$value": "{color.primitive.gray.0}", "$type": "color" },
-        "bg-overlay-scrim": { "$value": "rgba(0,0,0,0.64)", "$type": "color" },
-        "text-primary": { "$value": "{color.primitive.gray.50}", "$type": "color" },
-        "text-secondary": { "$value": "{color.primitive.gray.300}", "$type": "color" },
-        "text-tertiary": { "$value": "{color.primitive.gray.400}", "$type": "color" },
-        "text-disabled": { "$value": "{color.primitive.gray.600}", "$type": "color" },
-        "text-on-brand": { "$value": "{color.primitive.gray.0}", "$type": "color" },
-        "text-link": { "$value": "#6FA6F5", "$type": "color" },
-        "border-default": { "$value": "{color.primitive.gray.700}", "$type": "color" },
-        "border-strong": { "$value": "{color.primitive.gray.500}", "$type": "color" },
-        "border-focus": { "$value": "#6FA6F5", "$type": "color" },
-        "brand-primary": { "$value": "{color.primitive.crimson.400}", "$type": "color" },
-        "brand-primary-hover": { "$value": "{color.primitive.crimson.300}", "$type": "color" },
-        "brand-primary-active": { "$value": "{color.primitive.crimson.200}", "$type": "color" },
-        "brand-subtle-bg": { "$value": "rgba(191,0,0,0.16)", "$type": "color" },
-        "success": { "$value": "#4CAF6B", "$type": "color" },
-        "success-bg": { "$value": "rgba(30,142,62,0.16)", "$type": "color" },
-        "warning": { "$value": "#E0A438", "$type": "color" },
-        "warning-bg": { "$value": "rgba(184,117,3,0.18)", "$type": "color" },
-        "error": { "$value": "#E8703F", "$type": "color" },
-        "error-bg": { "$value": "rgba(214,73,31,0.18)", "$type": "color" },
-        "info": { "$value": "#6FA6F5", "$type": "color" },
-        "info-bg": { "$value": "rgba(20,98,201,0.18)", "$type": "color" }
+        "bg-canvas":          { "$value": "{color.primitive.gray.900}", "$type": "color" },
+        "bg-surface":         { "$value": "{color.primitive.gray.800}", "$type": "color" },
+        "bg-surface-sunken":  { "$value": "#141211", "$type": "color" },
+        "bg-inverse":         { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "bg-overlay-scrim":   { "$value": "rgba(0,0,0,0.64)", "$type": "color" },
+        "text-primary":       { "$value": "{color.primitive.gray.50}", "$type": "color" },
+        "text-secondary":     { "$value": "{color.primitive.gray.300}", "$type": "color" },
+        "text-tertiary":      { "$value": "{color.primitive.gray.400}", "$type": "color" },
+        "text-disabled":      { "$value": "{color.primitive.gray.600}", "$type": "color" },
+        "text-on-brand":      { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "text-link":          { "$value": "#6FA6F5", "$type": "color" },
+        "border-default":     { "$value": "{color.primitive.gray.700}", "$type": "color" },
+        "border-strong":      { "$value": "{color.primitive.gray.500}", "$type": "color" },
+        "border-focus":       { "$value": "#6FA6F5", "$type": "color" },
+        "brand-primary":          { "$value": "{color.primitive.crimson.500}", "$type": "color", "$description": "Solid-fill役割。crimson.400では白文字コントラストが4.05:1でAA未達のため500に変更（検証: 5.72:1）。" },
+        "brand-primary-hover":    { "$value": "{color.primitive.crimson.300}", "$type": "color" },
+        "brand-primary-active":   { "$value": "{color.primitive.crimson.200}", "$type": "color" },
+        "brand-primary-on-subtle":{ "$value": "{color.primitive.crimson.300}", "$type": "color", "$description": "brand-subtle-bg上のテキスト用。検証: brand-subtle-bgに対し4.70:1。" },
+        "brand-subtle-bg":      { "$value": "rgba(191,0,0,0.16)", "$type": "color" },
+        "success":       { "$value": "{color.primitive.green.400}", "$type": "color", "$description": "success-bg上のテキスト用。旧値#4CAF6Bは4.18:1でAA未達。検証: 6.59:1。" },
+        "success-bg":    { "$value": "rgba(30,142,62,0.16)", "$type": "color" },
+        "success-solid": { "$value": "{color.primitive.green.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 5.43:1。" },
+        "warning":       { "$value": "#E0A438", "$type": "color", "$description": "warning-bg上のテキスト用。検証: 4.91:1（AA達成済のため変更なし）。" },
+        "warning-bg":    { "$value": "rgba(184,117,3,0.18)", "$type": "color" },
+        "warning-solid": { "$value": "{color.primitive.amber.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 5.10:1。" },
+        "error":         { "$value": "{color.primitive.vermilion.300}", "$type": "color", "$description": "error-bg上のテキスト用。旧値#E8703Fは3.69:1でAA未達。検証: 6.10:1。" },
+        "error-bg":      { "$value": "rgba(214,73,31,0.18)", "$type": "color" },
+        "error-solid":   { "$value": "{color.primitive.vermilion.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 5.75:1。" },
+        "info":          { "$value": "#6FA6F5", "$type": "color" },
+        "info-bg":       { "$value": "rgba(20,98,201,0.18)", "$type": "color" },
+        "info-solid":    { "$value": "{color.primitive.blue.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 7.88:1。" }
       }
     }
   },
   "typography": {
     "font": {
-      "ui": { "$value": "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif", "$type": "fontFamily" },
-      "data": { "$value": "'Roboto Mono', 'SFMono-Regular', Menlo, monospace", "$type": "fontFamily" }
+      "ui":   { "$value": "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif", "$type": "fontFamily" },
+      "data": { "$value": "'Roboto Mono', 'SFMono-Regular', Menlo, monospace", "$type": "fontFamily", "$description": "Tabular/monospace for amounts, IDs, dates — anything scanned in columns." }
     },
     "scale": {
-      "display": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "28px", "fontWeight": "700", "lineHeight": "1.3" }, "$type": "typography" },
-      "h1": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.4" }, "$type": "typography" },
-      "h2": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "20px", "fontWeight": "700", "lineHeight": "1.4" }, "$type": "typography" },
-      "h3": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "17px", "fontWeight": "600", "lineHeight": "1.5" }, "$type": "typography" },
-      "body-l": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "16px", "fontWeight": "400", "lineHeight": "1.7" }, "$type": "typography" },
-      "body": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "15px", "fontWeight": "400", "lineHeight": "1.7" }, "$type": "typography" },
-      "body-s": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "13px", "fontWeight": "400", "lineHeight": "1.6" }, "$type": "typography" },
-      "caption": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "12px", "fontWeight": "500", "lineHeight": "1.5", "letterSpacing": "0.01em" }, "$type": "typography" },
+      "display":  { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "28px", "fontWeight": "700", "lineHeight": "1.3", "letterSpacing": "0" }, "$type": "typography" },
+      "h1":       { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.4", "letterSpacing": "0" }, "$type": "typography" },
+      "h2":       { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "20px", "fontWeight": "700", "lineHeight": "1.4", "letterSpacing": "0" }, "$type": "typography" },
+      "h3":       { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "17px", "fontWeight": "600", "lineHeight": "1.5", "letterSpacing": "0" }, "$type": "typography" },
+      "body-l":   { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "16px", "fontWeight": "400", "lineHeight": "1.7", "letterSpacing": "0" }, "$type": "typography" },
+      "body":     { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "15px", "fontWeight": "400", "lineHeight": "1.7", "letterSpacing": "0" }, "$type": "typography" },
+      "body-s":   { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "13px", "fontWeight": "400", "lineHeight": "1.6", "letterSpacing": "0" }, "$type": "typography" },
+      "caption":  { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "12px", "fontWeight": "500", "lineHeight": "1.5", "letterSpacing": "0.01em" }, "$type": "typography" },
       "overline": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "11px", "fontWeight": "600", "lineHeight": "1.4", "letterSpacing": "0.06em" }, "$type": "typography" },
-      "data-l": { "$value": { "fontFamily": "{typography.font.data}", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.3" }, "$type": "typography" },
-      "data": { "$value": { "fontFamily": "{typography.font.data}", "fontSize": "15px", "fontWeight": "500", "lineHeight": "1.6" }, "$type": "typography" }
+      "data-l":   { "$value": { "fontFamily": "{typography.font.data}", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.3", "letterSpacing": "0" }, "$type": "typography" },
+      "data":     { "$value": { "fontFamily": "{typography.font.data}", "fontSize": "15px", "fontWeight": "500", "lineHeight": "1.6", "letterSpacing": "0" }, "$type": "typography" }
     }
   },
   "spacing": {
-    "1": { "$value": "4px", "$type": "dimension" }, "2": { "$value": "8px", "$type": "dimension" },
-    "3": { "$value": "12px", "$type": "dimension" }, "4": { "$value": "16px", "$type": "dimension" },
-    "5": { "$value": "24px", "$type": "dimension" }, "6": { "$value": "32px", "$type": "dimension" },
-    "7": { "$value": "48px", "$type": "dimension" }, "8": { "$value": "64px", "$type": "dimension" }
+    "1": { "$value": "4px",  "$type": "dimension" },
+    "2": { "$value": "8px",  "$type": "dimension" },
+    "3": { "$value": "12px", "$type": "dimension" },
+    "4": { "$value": "16px", "$type": "dimension" },
+    "5": { "$value": "24px", "$type": "dimension" },
+    "6": { "$value": "32px", "$type": "dimension" },
+    "7": { "$value": "48px", "$type": "dimension" },
+    "8": { "$value": "64px", "$type": "dimension" }
   },
   "radius": {
-    "sm": { "$value": "4px", "$type": "dimension" }, "md": { "$value": "8px", "$type": "dimension" },
-    "lg": { "$value": "12px", "$type": "dimension" }, "xl": { "$value": "16px", "$type": "dimension" },
+    "sm":   { "$value": "4px",   "$type": "dimension" },
+    "md":   { "$value": "8px",   "$type": "dimension" },
+    "lg":   { "$value": "12px",  "$type": "dimension" },
+    "xl":   { "$value": "16px",  "$type": "dimension" },
     "full": { "$value": "999px", "$type": "dimension" }
   },
   "shadow": {
-    "xs": { "$value": [{ "color": "rgba(28,26,25,0.06)", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px" }], "$type": "shadow" },
-    "s": { "$value": [{ "color": "rgba(28,26,25,0.08)", "offsetX": "0px", "offsetY": "2px", "blur": "6px", "spread": "0px" }], "$type": "shadow" },
-    "m": { "$value": [{ "color": "rgba(28,26,25,0.10)", "offsetX": "0px", "offsetY": "6px", "blur": "16px", "spread": "0px" }], "$type": "shadow" },
-    "l": { "$value": [{ "color": "rgba(28,26,25,0.14)", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "0px" }], "$type": "shadow" },
+    "xs": { "$value": [{ "color": "rgba(28,26,25,0.06)", "offsetX": "0px", "offsetY": "1px", "blur": "2px",  "spread": "0px" }], "$type": "shadow" },
+    "s":  { "$value": [{ "color": "rgba(28,26,25,0.08)", "offsetX": "0px", "offsetY": "2px", "blur": "6px",  "spread": "0px" }], "$type": "shadow" },
+    "m":  { "$value": [{ "color": "rgba(28,26,25,0.10)", "offsetX": "0px", "offsetY": "6px", "blur": "16px", "spread": "0px" }], "$type": "shadow" },
+    "l":  { "$value": [{ "color": "rgba(28,26,25,0.14)", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "0px" }], "$type": "shadow" },
     "xl": { "$value": [{ "color": "rgba(28,26,25,0.18)", "offsetX": "0px", "offsetY": "24px", "blur": "56px", "spread": "0px" }], "$type": "shadow" }
   },
   "border": {
     "width": {
-      "hairline": { "$value": "1px", "$type": "dimension" }, "default": { "$value": "1px", "$type": "dimension" },
-      "thick": { "$value": "2px", "$type": "dimension" }, "focus": { "$value": "2px", "$type": "dimension" }
+      "hairline": { "$value": "1px", "$type": "dimension" },
+      "default":  { "$value": "1px", "$type": "dimension" },
+      "thick":    { "$value": "2px", "$type": "dimension" },
+      "focus":    { "$value": "2px", "$type": "dimension" }
     }
   },
   "icon": {
-    "size": { "sm": { "$value": "16px", "$type": "dimension" }, "md": { "$value": "20px", "$type": "dimension" }, "lg": { "$value": "24px", "$type": "dimension" } },
-    "stroke": { "$value": "2px", "$type": "dimension" }
+    "size": {
+      "sm": { "$value": "16px", "$type": "dimension" },
+      "md": { "$value": "20px", "$type": "dimension" },
+      "lg": { "$value": "24px", "$type": "dimension" }
+    },
+    "stroke": { "$value": "2px", "$type": "dimension" },
+    "style":  { "$value": "line (outlined), 24x24 grid, currentColor stroke", "$type": "other" }
   },
   "motion": {
     "duration": {
-      "instant": { "$value": "100ms", "$type": "duration" }, "fast": { "$value": "150ms", "$type": "duration" },
-      "base": { "$value": "200ms", "$type": "duration" }, "slow": { "$value": "300ms", "$type": "duration" }
+      "instant": { "$value": "100ms", "$type": "duration" },
+      "fast":    { "$value": "150ms", "$type": "duration" },
+      "base":    { "$value": "200ms", "$type": "duration" },
+      "slow":    { "$value": "300ms", "$type": "duration" }
     },
     "easing": {
-      "standard": { "$value": "cubic-bezier(0.2, 0.8, 0.2, 1)", "$type": "cubicBezier" },
-      "emphasized": { "$value": "cubic-bezier(0.3, 0, 0.1, 1)", "$type": "cubicBezier" }
-    }
+      "standard":   { "$value": "cubic-bezier(0.2, 0.8, 0.2, 1)", "$type": "cubicBezier" },
+      "emphasized": { "$value": "cubic-bezier(0.3, 0, 0.1, 1)",   "$type": "cubicBezier" }
+    },
+    "reducedMotion": { "$value": "prefers-reduced-motion: reduce → all durations collapse to 0.01ms, no transform-based motion", "$type": "other" }
   },
   "breakpoint": {
-    "sm": { "$value": "375px", "$type": "dimension" }, "md": { "$value": "768px", "$type": "dimension" },
-    "lg": { "$value": "1024px", "$type": "dimension" }, "xl": { "$value": "1280px", "$type": "dimension" },
-    "xxl": { "$value": "1440px", "$type": "dimension" }
+    "sm":  { "$value": "375px",  "$type": "dimension", "$description": "店頭スタッフ端末 (スマートフォン)" },
+    "md":  { "$value": "768px",  "$type": "dimension", "$description": "タブレットPOS" },
+    "lg":  { "$value": "1024px", "$type": "dimension", "$description": "小型ノートPC / 縦画面デスクトップ" },
+    "xl":  { "$value": "1280px", "$type": "dimension", "$description": "標準デスクトップ (本部管理画面の基準幅)" },
+    "xxl": { "$value": "1440px", "$type": "dimension", "$description": "ワイドデスクトップ" }
   }
 }</pre>
       <div class="copytoast" id="copytoast">JSONをコピーしました</div>
@@ -1591,3 +1664,5 @@
     targets.forEach(function(t){ io.observe(t); });
   })();
 </script>
+</body>
+</html>

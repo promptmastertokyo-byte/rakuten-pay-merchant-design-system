@@ -30,6 +30,7 @@
       },
       "green": {
         "50":  { "$value": "#EAF7EE", "$type": "color" },
+        "400": { "$value": "#4ADE80", "$type": "color", "$description": "Dark-theme on-subtle text tone — brightened so success text clears 4.5:1 against success-bg on a dark surface." },
         "500": { "$value": "#1E8E3E", "$type": "color" },
         "600": { "$value": "#167A34", "$type": "color" },
         "700": { "$value": "#0F5C27", "$type": "color" }
@@ -42,6 +43,7 @@
       },
       "vermilion": {
         "50":  { "$value": "#FDEEEA", "$type": "color" },
+        "300": { "$value": "#FFA987", "$type": "color", "$description": "Dark-theme on-subtle text tone — brightened so error text clears 4.5:1 against error-bg on a dark surface." },
         "500": { "$value": "#D6491F", "$type": "color" },
         "600": { "$value": "#B83A15", "$type": "color" },
         "700": { "$value": "#942D0F", "$type": "color" },
@@ -55,6 +57,7 @@
       }
     },
     "semantic": {
+      "$description": "light/dark は Tokens Studio for Figma で単一の Variable Collection に Light/Dark の2 Mode として設定すること（別々の変数として扱わない）。Style Dictionary 側は theme=light/dark をビルドターゲットの次元として渡す。",
       "light": {
         "bg-canvas":          { "$value": "{color.primitive.gray.25}", "$type": "color" },
         "bg-surface":         { "$value": "{color.primitive.gray.0}", "$type": "color" },
@@ -70,18 +73,23 @@
         "border-default":     { "$value": "{color.primitive.gray.200}", "$type": "color" },
         "border-strong":      { "$value": "{color.primitive.gray.400}", "$type": "color" },
         "border-focus":       { "$value": "{color.primitive.blue.500}", "$type": "color" },
-        "brand-primary":        { "$value": "{color.primitive.crimson.600}", "$type": "color" },
-        "brand-primary-hover":  { "$value": "{color.primitive.crimson.700}", "$type": "color" },
-        "brand-primary-active": { "$value": "{color.primitive.crimson.800}", "$type": "color" },
+        "brand-primary":          { "$value": "{color.primitive.crimson.600}", "$type": "color", "$description": "Solid-fill role (Button/Toast等、白文字と組む前提)。" },
+        "brand-primary-hover":    { "$value": "{color.primitive.crimson.700}", "$type": "color" },
+        "brand-primary-active":   { "$value": "{color.primitive.crimson.800}", "$type": "color" },
+        "brand-primary-on-subtle":{ "$value": "{color.primitive.crimson.600}", "$type": "color", "$description": "brand-subtle-bg等の淡色背景に載せるテキスト/アクセント用ロール。light theme ではbrand-primaryと同値。" },
         "brand-subtle-bg":      { "$value": "{color.primitive.crimson.50}", "$type": "color" },
-        "success":     { "$value": "{color.primitive.green.600}", "$type": "color" },
-        "success-bg":  { "$value": "{color.primitive.green.50}", "$type": "color" },
-        "warning":     { "$value": "{color.primitive.amber.600}", "$type": "color" },
-        "warning-bg":  { "$value": "{color.primitive.amber.50}", "$type": "color" },
-        "error":       { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
-        "error-bg":    { "$value": "{color.primitive.vermilion.50}", "$type": "color" },
-        "info":        { "$value": "{color.primitive.blue.600}", "$type": "color" },
-        "info-bg":     { "$value": "{color.primitive.blue.50}", "$type": "color" }
+        "success":       { "$value": "{color.primitive.green.600}", "$type": "color", "$description": "on-subtle役割（Badge/Do-Dont等、success-bgと対で使用）。" },
+        "success-bg":    { "$value": "{color.primitive.green.50}", "$type": "color" },
+        "success-solid": { "$value": "{color.primitive.green.600}", "$type": "color", "$description": "Solid-fill役割（Toast等、白文字と組む前提）。" },
+        "warning":       { "$value": "{color.primitive.amber.600}", "$type": "color" },
+        "warning-bg":    { "$value": "{color.primitive.amber.50}", "$type": "color" },
+        "warning-solid": { "$value": "{color.primitive.amber.600}", "$type": "color" },
+        "error":         { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
+        "error-bg":      { "$value": "{color.primitive.vermilion.50}", "$type": "color" },
+        "error-solid":   { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
+        "info":          { "$value": "{color.primitive.blue.600}", "$type": "color" },
+        "info-bg":       { "$value": "{color.primitive.blue.50}", "$type": "color" },
+        "info-solid":    { "$value": "{color.primitive.blue.600}", "$type": "color" }
       },
       "dark": {
         "bg-canvas":          { "$value": "{color.primitive.gray.900}", "$type": "color" },
@@ -98,18 +106,23 @@
         "border-default":     { "$value": "{color.primitive.gray.700}", "$type": "color" },
         "border-strong":      { "$value": "{color.primitive.gray.500}", "$type": "color" },
         "border-focus":       { "$value": "#6FA6F5", "$type": "color" },
-        "brand-primary":        { "$value": "{color.primitive.crimson.400}", "$type": "color" },
-        "brand-primary-hover":  { "$value": "{color.primitive.crimson.300}", "$type": "color" },
-        "brand-primary-active": { "$value": "{color.primitive.crimson.200}", "$type": "color" },
+        "brand-primary":          { "$value": "{color.primitive.crimson.500}", "$type": "color", "$description": "Solid-fill役割。crimson.400では白文字コントラストが4.05:1でAA未達のため500に変更（検証: 5.72:1）。" },
+        "brand-primary-hover":    { "$value": "{color.primitive.crimson.300}", "$type": "color" },
+        "brand-primary-active":   { "$value": "{color.primitive.crimson.200}", "$type": "color" },
+        "brand-primary-on-subtle":{ "$value": "{color.primitive.crimson.300}", "$type": "color", "$description": "brand-subtle-bg上のテキスト用。検証: brand-subtle-bgに対し4.70:1。" },
         "brand-subtle-bg":      { "$value": "rgba(191,0,0,0.16)", "$type": "color" },
-        "success":     { "$value": "#4CAF6B", "$type": "color" },
-        "success-bg":  { "$value": "rgba(30,142,62,0.16)", "$type": "color" },
-        "warning":     { "$value": "#E0A438", "$type": "color" },
-        "warning-bg":  { "$value": "rgba(184,117,3,0.18)", "$type": "color" },
-        "error":       { "$value": "#E8703F", "$type": "color" },
-        "error-bg":    { "$value": "rgba(214,73,31,0.18)", "$type": "color" },
-        "info":        { "$value": "#6FA6F5", "$type": "color" },
-        "info-bg":     { "$value": "rgba(20,98,201,0.18)", "$type": "color" }
+        "success":       { "$value": "{color.primitive.green.400}", "$type": "color", "$description": "success-bg上のテキスト用。旧値#4CAF6Bは4.18:1でAA未達。検証: 6.59:1。" },
+        "success-bg":    { "$value": "rgba(30,142,62,0.16)", "$type": "color" },
+        "success-solid": { "$value": "{color.primitive.green.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 5.43:1。" },
+        "warning":       { "$value": "#E0A438", "$type": "color", "$description": "warning-bg上のテキスト用。検証: 4.91:1（AA達成済のため変更なし）。" },
+        "warning-bg":    { "$value": "rgba(184,117,3,0.18)", "$type": "color" },
+        "warning-solid": { "$value": "{color.primitive.amber.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 5.10:1。" },
+        "error":         { "$value": "{color.primitive.vermilion.300}", "$type": "color", "$description": "error-bg上のテキスト用。旧値#E8703Fは3.69:1でAA未達。検証: 6.10:1。" },
+        "error-bg":      { "$value": "rgba(214,73,31,0.18)", "$type": "color" },
+        "error-solid":   { "$value": "{color.primitive.vermilion.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 5.75:1。" },
+        "info":          { "$value": "#6FA6F5", "$type": "color" },
+        "info-bg":       { "$value": "rgba(20,98,201,0.18)", "$type": "color" },
+        "info-solid":    { "$value": "{color.primitive.blue.600}", "$type": "color", "$description": "Solid-fill役割。白文字コントラスト検証: 7.88:1。" }
       }
     }
   },
