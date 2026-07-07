@@ -1,0 +1,1593 @@
+<meta charset="UTF-8">
+<title>Rakuten Pay Merchant DS</title>
+<style>
+  :root{
+    --gray-0:#FFFFFF; --gray-25:#FAF9F8; --gray-50:#F5F3F2; --gray-100:#EDEAE8; --gray-200:#DED9D6;
+    --gray-300:#C7C0BC; --gray-400:#A69D97; --gray-500:#857B76; --gray-600:#675F5B; --gray-700:#4C4643;
+    --gray-800:#322E2C; --gray-900:#1C1A19;
+    --crimson-50:#FDECEC; --crimson-100:#FBD4D4; --crimson-200:#F5A8A8; --crimson-400:#D94F4F;
+    --crimson-600:#BF0000; --crimson-700:#9E0000; --crimson-800:#7A0000;
+    --green-50:#EAF7EE; --green-600:#167A34;
+    --amber-50:#FDF3E0; --amber-600:#9A6203;
+    --vermilion-50:#FDEEEA; --vermilion-600:#B83A15;
+    --blue-50:#EAF2FE; --blue-500:#1462C9; --blue-600:#0F4FA3;
+
+    --bg-canvas: var(--gray-25);
+    --bg-surface: var(--gray-0);
+    --bg-surface-sunken: var(--gray-50);
+    --bg-inverse: var(--gray-900);
+    --bg-overlay-scrim: rgba(28,26,25,.48);
+    --text-primary: var(--gray-900);
+    --text-secondary: var(--gray-600);
+    --text-tertiary: var(--gray-500);
+    --text-disabled: var(--gray-300);
+    --text-on-brand: var(--gray-0);
+    --text-link: var(--blue-600);
+    --border-default: var(--gray-200);
+    --border-strong: var(--gray-400);
+    --border-focus: var(--blue-500);
+    --brand: var(--crimson-600);
+    --brand-hover: var(--crimson-700);
+    --brand-active: var(--crimson-800);
+    --brand-subtle-bg: var(--crimson-50);
+    --success: var(--green-600); --success-bg: var(--green-50);
+    --warning: var(--amber-600); --warning-bg: var(--amber-50);
+    --error: var(--vermilion-600); --error-bg: var(--vermilion-50);
+    --info: var(--blue-600); --info-bg: var(--blue-50);
+
+    --font-ui: "Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif;
+    --font-data: ui-monospace,"Roboto Mono","SFMono-Regular",Menlo,monospace;
+
+    --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px; --sp-7:48px; --sp-8:64px;
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-xl:16px; --radius-full:999px;
+    --shadow-xs:0 1px 2px rgba(28,26,25,.06);
+    --shadow-s:0 2px 6px rgba(28,26,25,.08);
+    --shadow-m:0 6px 16px rgba(28,26,25,.10);
+    --shadow-l:0 12px 32px rgba(28,26,25,.14);
+    --shadow-xl:0 24px 56px rgba(28,26,25,.18);
+    --dur-instant:100ms; --dur-fast:150ms; --dur-base:200ms; --dur-slow:300ms;
+    --ease-standard:cubic-bezier(.2,.8,.2,1); --ease-emph:cubic-bezier(.3,0,.1,1);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg-canvas: var(--gray-900); --bg-surface: var(--gray-800); --bg-surface-sunken:#141211;
+      --bg-inverse: var(--gray-0); --bg-overlay-scrim: rgba(0,0,0,.64);
+      --text-primary: var(--gray-50); --text-secondary: var(--gray-300); --text-tertiary: var(--gray-400);
+      --text-disabled: var(--gray-600); --text-link:#6FA6F5;
+      --border-default: var(--gray-700); --border-strong: var(--gray-500); --border-focus:#6FA6F5;
+      --brand:#D94F4F; --brand-hover:#F5A8A8; --brand-active:#FBD4D4; --brand-subtle-bg:rgba(191,0,0,.16);
+      --success:#4CAF6B; --success-bg:rgba(30,142,62,.16);
+      --warning:#E0A438; --warning-bg:rgba(184,117,3,.18);
+      --error:#E8703F; --error-bg:rgba(214,73,31,.18);
+      --info:#6FA6F5; --info-bg:rgba(20,98,201,.18);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg-canvas: var(--gray-900); --bg-surface: var(--gray-800); --bg-surface-sunken:#141211;
+    --bg-inverse: var(--gray-0); --bg-overlay-scrim: rgba(0,0,0,.64);
+    --text-primary: var(--gray-50); --text-secondary: var(--gray-300); --text-tertiary: var(--gray-400);
+    --text-disabled: var(--gray-600); --text-link:#6FA6F5;
+    --border-default: var(--gray-700); --border-strong: var(--gray-500); --border-focus:#6FA6F5;
+    --brand:#D94F4F; --brand-hover:#F5A8A8; --brand-active:#FBD4D4; --brand-subtle-bg:rgba(191,0,0,.16);
+    --success:#4CAF6B; --success-bg:rgba(30,142,62,.16);
+    --warning:#E0A438; --warning-bg:rgba(184,117,3,.18);
+    --error:#E8703F; --error-bg:rgba(214,73,31,.18);
+    --info:#6FA6F5; --info-bg:rgba(20,98,201,.18);
+  }
+  :root[data-theme="light"]{
+    --bg-canvas: var(--gray-25); --bg-surface: var(--gray-0); --bg-surface-sunken: var(--gray-50);
+    --bg-inverse: var(--gray-900); --bg-overlay-scrim: rgba(28,26,25,.48);
+    --text-primary: var(--gray-900); --text-secondary: var(--gray-600); --text-tertiary: var(--gray-500);
+    --text-disabled: var(--gray-300); --text-link: var(--blue-600);
+    --border-default: var(--gray-200); --border-strong: var(--gray-400); --border-focus: var(--blue-500);
+    --brand: var(--crimson-600); --brand-hover: var(--crimson-700); --brand-active: var(--crimson-800);
+    --brand-subtle-bg: var(--crimson-50);
+    --success: var(--green-600); --success-bg: var(--green-50);
+    --warning: var(--amber-600); --warning-bg: var(--amber-50);
+    --error: var(--vermilion-600); --error-bg: var(--vermilion-50);
+    --info: var(--blue-600); --info-bg: var(--blue-50);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg-canvas); color:var(--text-primary);
+    font-family:var(--font-ui); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--brand-subtle-bg); color:var(--brand);}
+  a{color:var(--text-link);}
+  :focus-visible{outline:2px solid var(--border-focus); outline-offset:2px; border-radius:2px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.01ms !important; transition-duration:.01ms !important;}
+  }
+
+  .text-display{font-size:28px;font-weight:700;line-height:1.3;}
+  .text-h1{font-size:24px;font-weight:700;line-height:1.4;}
+  .text-h2{font-size:20px;font-weight:700;line-height:1.4;}
+  .text-h3{font-size:17px;font-weight:600;line-height:1.5;}
+  .text-body-l{font-size:16px;font-weight:400;line-height:1.7;}
+  .text-body{font-size:15px;font-weight:400;line-height:1.7;}
+  .text-body-s{font-size:13px;font-weight:400;line-height:1.6;}
+  .text-caption{font-size:12px;font-weight:500;line-height:1.5;letter-spacing:.01em;}
+  .text-overline{font-size:11px;font-weight:600;line-height:1.4;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);}
+  .text-data-l{font-family:var(--font-data);font-size:24px;font-weight:700;line-height:1.3;font-variant-numeric:tabular-nums;}
+  .text-data{font-family:var(--font-data);font-size:15px;font-weight:500;line-height:1.6;font-variant-numeric:tabular-nums;}
+  h1,h2,h3,h4{margin:0; text-wrap:balance;}
+  p{margin:0;}
+
+  .shell{display:grid; grid-template-columns:264px 1fr; min-height:100vh;}
+  .sidebar{
+    position:sticky; top:0; height:100vh; overflow-y:auto; border-right:1px solid var(--border-default);
+    background:var(--bg-surface); padding:var(--sp-5) var(--sp-4); display:flex; flex-direction:column; gap:var(--sp-5);
+  }
+  .brand-mark{display:flex; align-items:center; gap:var(--sp-2);}
+  .brand-mark .dot{width:22px;height:22px;border-radius:var(--radius-md);background:var(--brand);flex:none;}
+  .brand-mark strong{font-size:14px;}
+  .brand-mark span{display:block;font-size:11px;color:var(--text-tertiary);}
+  .nav-group{display:flex; flex-direction:column; gap:2px;}
+  .nav-group > .label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin:var(--sp-3) 0 var(--sp-1) var(--sp-2);}
+  .nav-link{
+    display:block; padding:6px var(--sp-2); border-radius:var(--radius-sm); font-size:13px; color:var(--text-secondary);
+    text-decoration:none; transition:background var(--dur-fast) var(--ease-standard), color var(--dur-fast);
+  }
+  .nav-link:hover{background:var(--bg-surface-sunken); color:var(--text-primary);}
+  .nav-link.active{background:var(--brand-subtle-bg); color:var(--brand); font-weight:600;}
+  .theme-toggle{
+    margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:var(--sp-2);
+    padding:var(--sp-2) var(--sp-3); border:1px solid var(--border-default); border-radius:var(--radius-md);
+    background:var(--bg-surface-sunken); font-size:12px; color:var(--text-secondary);
+  }
+  .theme-toggle button{
+    font:inherit; border:1px solid var(--border-default); background:var(--bg-surface); color:var(--text-primary);
+    padding:4px 10px; border-radius:var(--radius-full); cursor:pointer;
+  }
+  .theme-toggle button[aria-pressed="true"]{background:var(--brand); color:var(--text-on-brand); border-color:var(--brand);}
+
+  .main{padding:var(--sp-6) var(--sp-7) var(--sp-8); max-width:1180px;}
+  section{margin-bottom:var(--sp-8); scroll-margin-top:var(--sp-4);}
+  section > .section-head{margin-bottom:var(--sp-5); padding-bottom:var(--sp-4); border-bottom:1px solid var(--border-default);}
+  section > .section-head .eyebrow{color:var(--brand);}
+  .lede{color:var(--text-secondary); max-width:64ch; margin-top:var(--sp-2) !important;}
+
+  .grid{display:grid; gap:var(--sp-5);}
+  .grid-2{grid-template-columns:repeat(2,1fr);}
+  .grid-3{grid-template-columns:repeat(3,1fr);}
+  @media (max-width:1024px){ .grid-2,.grid-3{grid-template-columns:1fr;} .shell{grid-template-columns:1fr;} .sidebar{position:relative; height:auto;} }
+
+  .panel{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:var(--sp-5); box-shadow:var(--shadow-xs);}
+  .kicker{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--text-tertiary);}
+
+  code, pre{font-family:var(--font-data);}
+  pre{background:var(--bg-inverse); color:#F2EFED; padding:var(--sp-4); border-radius:var(--radius-md); overflow-x:auto; font-size:12.5px; line-height:1.6;}
+  .swatch-row{display:flex; overflow-x:auto; border-radius:var(--radius-md); box-shadow:var(--shadow-xs);}
+  .swatch{flex:1 0 64px; min-width:64px; height:64px; display:flex; align-items:flex-end; padding:6px; font-size:10px; font-family:var(--font-data); color:#fff;}
+
+  /* ---- Component doc-card scaffold ---- */
+  .comp{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); box-shadow:var(--shadow-xs); margin-bottom:var(--sp-6); overflow:hidden;}
+  .comp-head{padding:var(--sp-4) var(--sp-5); border-bottom:1px solid var(--border-default); display:flex; align-items:baseline; justify-content:space-between; gap:var(--sp-3); flex-wrap:wrap;}
+  .comp-head h3{font-size:16px;}
+  .comp-head .purpose{color:var(--text-secondary); font-size:13px;}
+  .comp-body{display:grid; grid-template-columns:1.1fr 1fr;}
+  @media (max-width:900px){ .comp-body{grid-template-columns:1fr;} }
+  .comp-preview{padding:var(--sp-6) var(--sp-5); background:var(--bg-surface-sunken); display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--sp-4); border-right:1px solid var(--border-default); min-height:140px;}
+  @media (max-width:900px){ .comp-preview{border-right:none; border-bottom:1px solid var(--border-default);} }
+  .comp-doc{padding:var(--sp-4) var(--sp-5); display:flex; flex-direction:column; gap:var(--sp-3);}
+  .doc-row{display:flex; gap:var(--sp-2); align-items:flex-start;}
+  .doc-row .k{flex:none; width:64px; font-size:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; color:var(--text-tertiary); padding-top:2px;}
+  .doc-row .v{flex:1; font-size:13px; color:var(--text-primary);}
+  .doc-row .v ul{margin:0; padding-left:16px;}
+  .doc-row .v li{margin-bottom:2px;}
+  .chiprow{display:flex; flex-wrap:wrap; gap:6px;}
+  .micro-chip{font-size:11px; padding:2px 8px; border-radius:var(--radius-full); background:var(--bg-surface); border:1px solid var(--border-default); color:var(--text-secondary);}
+  .dodont{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3);}
+  @media (max-width:520px){ .dodont{grid-template-columns:1fr;} }
+  .do,.dont{border-radius:var(--radius-md); padding:var(--sp-3); font-size:12.5px;}
+  .do{background:var(--success-bg); color:var(--success);}
+  .dont{background:var(--error-bg); color:var(--error);}
+  .do b, .dont b{display:block; font-size:11px; text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px;}
+
+  /* ---- Real component styles ---- */
+  .btn{font:inherit; font-weight:600; font-size:14px; border-radius:var(--radius-md); padding:9px 18px; border:1px solid transparent; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background var(--dur-fast) var(--ease-standard), transform var(--dur-fast);}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--brand); color:var(--text-on-brand);}
+  .btn-primary:hover{background:var(--brand-hover);}
+  .btn-secondary{background:var(--bg-surface); color:var(--text-primary); border-color:var(--border-strong);}
+  .btn-secondary:hover{background:var(--bg-surface-sunken);}
+  .btn-ghost{background:transparent; color:var(--brand); border-color:transparent;}
+  .btn-ghost:hover{background:var(--brand-subtle-bg);}
+  .btn-danger{background:var(--error); color:#fff;}
+  .btn-danger:hover{filter:brightness(.92);}
+  .btn[disabled]{background:var(--gray-100); color:var(--text-disabled); cursor:not-allowed;}
+  .btn-sm{padding:6px 12px; font-size:12.5px;}
+
+  .field{display:flex; flex-direction:column; gap:6px; width:220px;}
+  .field label{font-size:12.5px; font-weight:600; color:var(--text-secondary);}
+  .field .hint{font-size:11.5px; color:var(--text-tertiary);}
+  .field .err{font-size:11.5px; color:var(--error);}
+  .input, .select{
+    font:inherit; font-size:14px; padding:9px 12px; border-radius:var(--radius-md); border:1px solid var(--border-strong);
+    background:var(--bg-surface); color:var(--text-primary); width:100%;
+  }
+  .input:focus, .select:focus{border-color:var(--border-focus); box-shadow:0 0 0 3px color-mix(in srgb, var(--border-focus) 25%, transparent);}
+  .field.is-error .input{border-color:var(--error);}
+  .field.is-disabled .input{background:var(--gray-100); color:var(--text-disabled);}
+
+  .row{display:flex; align-items:center; gap:8px; font-size:13.5px;}
+  .chk, .radio{width:18px; height:18px; accent-color:var(--brand); flex:none;}
+  .switch{position:relative; width:38px; height:22px; flex:none;}
+  .switch input{opacity:0; width:100%; height:100%; position:absolute; margin:0; cursor:pointer;}
+  .switch .track{position:absolute; inset:0; background:var(--gray-300); border-radius:var(--radius-full); transition:background var(--dur-base) var(--ease-standard);}
+  .switch .knob{position:absolute; top:2px; left:2px; width:18px; height:18px; background:#fff; border-radius:50%; box-shadow:var(--shadow-s); transition:transform var(--dur-base) var(--ease-standard);}
+  .switch input:checked + .track{background:var(--brand);}
+  .switch input:checked ~ .knob{transform:translateX(16px);}
+
+  .badge{display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; padding:3px 10px; border-radius:var(--radius-full);}
+  .badge-success{background:var(--success-bg); color:var(--success);}
+  .badge-warning{background:var(--warning-bg); color:var(--warning);}
+  .badge-error{background:var(--error-bg); color:var(--error);}
+  .badge-info{background:var(--info-bg); color:var(--info);}
+  .badge-neutral{background:var(--gray-100); color:var(--text-secondary);}
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  .chip{display:inline-flex; align-items:center; gap:6px; font-size:13px; padding:5px 12px; border-radius:var(--radius-full); background:var(--bg-surface-sunken); border:1px solid var(--border-default); color:var(--text-primary);}
+  .chip button{border:none; background:none; color:var(--text-tertiary); cursor:pointer; font-size:13px; line-height:1; padding:0;}
+  .chip.selected{background:var(--brand-subtle-bg); border-color:var(--brand); color:var(--brand);}
+
+  .tag{display:inline-flex; align-items:center; font-size:11px; font-weight:700; padding:2px 8px; border-radius:var(--radius-sm); letter-spacing:.02em;}
+  .tag-owner{background:var(--gray-900); color:#fff;}
+  .tag-staff{background:var(--gray-100); color:var(--text-secondary);}
+  .tag-readonly{background:var(--info-bg); color:var(--info);}
+
+  .card-demo{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:var(--sp-4); box-shadow:var(--shadow-s); width:220px;}
+  .card-demo .cap{color:var(--text-tertiary); font-size:11.5px;}
+
+  table.t{border-collapse:collapse; font-size:13px; width:100%; background:var(--bg-surface);}
+  table.t th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-tertiary); padding:8px 12px; border-bottom:1px solid var(--border-default);}
+  table.t td{padding:10px 12px; border-bottom:1px solid var(--border-default); font-variant-numeric:tabular-nums;}
+  table.t tr:hover td{background:var(--bg-surface-sunken);}
+
+  .tabs{display:flex; gap:var(--sp-4); border-bottom:1px solid var(--border-default);}
+  .tabs .tab{padding:8px 2px; font-size:13.5px; color:var(--text-secondary); border-bottom:2px solid transparent; cursor:pointer; margin-bottom:-1px;}
+  .tabs .tab.active{color:var(--brand); border-color:var(--brand); font-weight:600;}
+
+  .sidenav-demo{width:180px; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:var(--sp-2); display:flex; flex-direction:column; gap:2px;}
+  .sidenav-demo a{padding:8px 10px; border-radius:var(--radius-sm); font-size:13px; color:var(--text-secondary); text-decoration:none;}
+  .sidenav-demo a.active{background:var(--brand-subtle-bg); color:var(--brand); font-weight:600;}
+
+  .header-demo{width:100%; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-md); padding:10px 16px; display:flex; align-items:center; justify-content:space-between;}
+  .breadcrumb{display:flex; gap:6px; font-size:12.5px; color:var(--text-tertiary); align-items:center;}
+  .breadcrumb b{color:var(--text-primary); font-weight:600;}
+
+  .modal-demo{width:100%; max-width:300px; background:var(--bg-surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-l); padding:var(--sp-4);}
+  .modal-demo h4{font-size:15px; margin-bottom:6px;}
+  .modal-demo p{font-size:12.5px; color:var(--text-secondary); margin-bottom:var(--sp-3) !important;}
+  .drawer-demo{width:220px; height:180px; background:var(--bg-surface); box-shadow:var(--shadow-l); border-radius:var(--radius-lg) 0 0 var(--radius-lg); padding:var(--sp-4); position:relative;}
+
+  .toast{display:flex; gap:10px; align-items:flex-start; background:var(--gray-900); color:#fff; padding:12px 16px; border-radius:var(--radius-md); box-shadow:var(--shadow-m); font-size:13px; max-width:280px;}
+  .toast.success{background:var(--success);}
+  .toast.error{background:var(--error);}
+
+  .tooltip-demo{position:relative; display:inline-block;}
+  .tooltip-bubble{background:var(--gray-900); color:#fff; font-size:11.5px; padding:6px 10px; border-radius:var(--radius-sm); position:absolute; bottom:130%; left:50%; transform:translateX(-50%); white-space:nowrap;}
+  .tooltip-bubble:after{content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--gray-900);}
+
+  .state-box{display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; padding:var(--sp-5); color:var(--text-secondary); font-size:13px; max-width:220px;}
+  .state-box .ic{width:40px; height:40px; border-radius:50%; background:var(--gray-100); display:flex; align-items:center; justify-content:center; color:var(--text-tertiary);}
+  .state-box.error .ic{background:var(--error-bg); color:var(--error);}
+
+  .spinner{width:22px; height:22px; border-radius:50%; border:3px solid var(--gray-200); border-top-color:var(--brand); animation:spin 900ms linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .skeleton{background:linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 37%, var(--gray-100) 63%); background-size:400% 100%; animation:sk 1.4s ease infinite; border-radius:var(--radius-sm);}
+  @keyframes sk{0%{background-position:100% 0;}100%{background-position:0 0;}}
+
+  .pager{display:flex; align-items:center; gap:6px; font-size:13px;}
+  .pager button{width:28px; height:28px; border-radius:var(--radius-sm); border:1px solid var(--border-default); background:var(--bg-surface); cursor:pointer; color:var(--text-secondary);}
+  .pager button.active{background:var(--brand); border-color:var(--brand); color:#fff;}
+
+  .search-demo{display:flex; align-items:center; gap:8px; border:1px solid var(--border-strong); border-radius:var(--radius-full); padding:8px 14px; background:var(--bg-surface); width:220px;}
+  .search-demo input{border:none; outline:none; font:inherit; font-size:13.5px; flex:1; background:none; color:var(--text-primary);}
+
+  .filter-bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+
+  .amount{font-family:var(--font-data); font-variant-numeric:tabular-nums;}
+  .amount.lg{font-size:26px; font-weight:700;}
+  .amount .yen{font-size:.6em; margin-right:2px; color:var(--text-tertiary);}
+  .amount.negative{color:var(--error);}
+  .amount.positive{color:var(--success);}
+
+  .confirm-demo{width:100%; max-width:300px; background:var(--bg-surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-l); padding:var(--sp-4); border-top:3px solid var(--error);}
+  .storeswitch{display:flex; align-items:center; gap:8px; border:1px solid var(--border-default); border-radius:var(--radius-md); padding:8px 12px; background:var(--bg-surface); font-size:13px; cursor:pointer;}
+  .storeswitch .avatar{width:26px;height:26px;border-radius:50%;background:var(--brand-subtle-bg); color:var(--brand); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;}
+
+  .deposit-card{width:264px; background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:var(--sp-4); box-shadow:var(--shadow-xs);}
+  .deposit-card .row2{display:flex; justify-content:space-between; align-items:baseline; margin-top:var(--sp-2); gap:8px;}
+  .deposit-card .row2 .text-caption{white-space:nowrap;}
+
+  .daterange{display:flex; align-items:center; gap:8px; border:1px solid var(--border-strong); border-radius:var(--radius-md); padding:8px 12px; background:var(--bg-surface); font-size:13px;}
+
+  .receipt{width:200px; background:var(--bg-surface); border:1px dashed var(--border-strong); border-radius:var(--radius-md); padding:var(--sp-3); font-size:11.5px; font-family:var(--font-data);}
+  .receipt hr{border:none; border-top:1px dashed var(--border-default); margin:8px 0;}
+  .receipt .line{display:flex; justify-content:space-between;}
+
+  .txrow{display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid var(--border-default); font-size:13px; width:100%; max-width:320px;}
+  .txrow .l{display:flex; flex-direction:column;}
+  .txrow .l .t{color:var(--text-tertiary); font-size:11px;}
+
+  .numpad{display:grid; grid-template-columns:repeat(3,44px); gap:6px;}
+  .numpad button{height:44px; border-radius:var(--radius-md); border:1px solid var(--border-default); background:var(--bg-surface); font-size:16px; font-family:var(--font-data); cursor:pointer;}
+  .numpad button.op{background:var(--brand); color:#fff; border-color:var(--brand);}
+
+  .role-tag{display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:700; padding:3px 9px; border-radius:var(--radius-sm);}
+
+  .pattern-card{background:var(--bg-surface); border:1px solid var(--border-default); border-radius:var(--radius-lg); padding:var(--sp-4); box-shadow:var(--shadow-xs);}
+  .pattern-card h4{font-size:14.5px; margin-bottom:6px;}
+  .pattern-card .tag-num{display:inline-flex; width:22px; height:22px; border-radius:50%; background:var(--brand-subtle-bg); color:var(--brand); align-items:center; justify-content:center; font-size:11px; font-weight:700; margin-right:8px;}
+
+  .a11y-item{display:flex; gap:var(--sp-3); padding:var(--sp-4) 0; border-bottom:1px solid var(--border-default);}
+  .a11y-item .ic{flex:none; width:36px;height:36px;border-radius:50%;background:var(--brand-subtle-bg); color:var(--brand); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;}
+
+  .token-tabs{display:flex; gap:8px; margin-bottom:var(--sp-3);}
+  .token-tabs button{font:inherit; font-size:12.5px; padding:6px 14px; border-radius:var(--radius-full); border:1px solid var(--border-default); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer;}
+  .token-tabs button.active{background:var(--brand); color:#fff; border-color:var(--brand);}
+  .token-actions{display:flex; gap:8px; margin-bottom:var(--sp-3);}
+  .copytoast{position:fixed; bottom:24px; right:24px; background:var(--gray-900); color:#fff; padding:10px 16px; border-radius:var(--radius-md); font-size:13px; box-shadow:var(--shadow-m); opacity:0; transform:translateY(8px); transition:opacity var(--dur-base), transform var(--dur-base); pointer-events:none; z-index:50;}
+  .copytoast.show{opacity:1; transform:translateY(0);}
+</style>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand-mark">
+      <span class="dot" aria-hidden="true"></span>
+      <span><strong>楽天ペイ 加盟店コンソール</strong><span>Design System v1.0</span></span>
+    </div>
+    <nav>
+      <div class="nav-group">
+        <a class="nav-link" href="#overview">概要</a>
+        <a class="nav-link" href="#principles">Design Principles</a>
+      </div>
+      <div class="nav-group">
+        <div class="label">Foundations</div>
+        <a class="nav-link" href="#f-color">Color</a>
+        <a class="nav-link" href="#f-type">Typography</a>
+        <a class="nav-link" href="#f-space">Spacing / Radius</a>
+        <a class="nav-link" href="#f-elevation">Elevation / Border</a>
+        <a class="nav-link" href="#f-icon">Iconography</a>
+        <a class="nav-link" href="#f-motion">Motion</a>
+        <a class="nav-link" href="#f-breakpoint">Breakpoints</a>
+      </div>
+      <div class="nav-group">
+        <div class="label">Components</div>
+        <a class="nav-link" href="#c-inputs">入力・操作</a>
+        <a class="nav-link" href="#c-status">ステータス・ラベル</a>
+        <a class="nav-link" href="#c-layout">レイアウト・ナビ</a>
+        <a class="nav-link" href="#c-overlay">オーバーレイ・フィードバック</a>
+        <a class="nav-link" href="#c-domain">加盟店ドメイン固有</a>
+      </div>
+      <div class="nav-group">
+        <div class="label">Patterns</div>
+        <a class="nav-link" href="#patterns">画面パターン</a>
+      </div>
+      <div class="nav-group">
+        <div class="label">Quality</div>
+        <a class="nav-link" href="#a11y">Accessibility</a>
+        <a class="nav-link" href="#tokens">Design Tokens (JSON)</a>
+      </div>
+    </nav>
+    <div class="theme-toggle">
+      <span>テーマ</span>
+      <span role="group" aria-label="テーマ切り替え">
+        <button type="button" id="theme-light" aria-pressed="true" onclick="setTheme('light')">Light</button>
+        <button type="button" id="theme-dark" aria-pressed="false" onclick="setTheme('dark')">Dark</button>
+      </span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section id="overview">
+      <div class="section-head">
+        <span class="kicker eyebrow">Design System — 楽天ペイ加盟店向けサービス</span>
+        <h1 class="text-display" style="margin-top:8px;">加盟店コンソール デザインシステム</h1>
+        <p class="text-body lede">実店舗・EC問わず加盟店がレジ横／バックオフィスで日々の売上・入金・審査状況を確認するための管理画面群を対象とする。数字を素早く読ませ、お金に関わる操作は必ず立ち止まらせる、という2軸を全コンポーネントの判断基準に置く。</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="panel">
+          <span class="text-overline">対象ユーザー</span>
+          <p class="text-body" style="margin-top:6px;">店舗オーナー / 店頭スタッフ / 本部管理者。年齢層・ITリテラシーの幅が広く、店頭では反射光下・片手操作が前提。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">利用環境</span>
+          <p class="text-body" style="margin-top:6px;">レジ横タブレット、スタッフ個人のスマートフォン、本部オフィスのデスクトップ。オフライン復帰時の再同期を前提に設計。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">設計方針</span>
+          <p class="text-body" style="margin-top:6px;">Atomic Design（Tokens→Elements→Components→Patterns→Screens）。全プロパティはDesign Tokensを起点にし、ハードコード値を持たない。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="principles">
+      <div class="section-head">
+        <span class="kicker">01</span>
+        <h2 class="text-h1">Design Principles</h2>
+        <p class="text-body lede">3層（デザイン原則 / UX原則 / ブランド原則）。すべてのコンポーネント判断・レビューはこの9項目に照らして可否を決める。</p>
+      </div>
+
+      <h3 class="text-h3" style="margin-bottom:var(--sp-3);">デザイン原則</h3>
+      <div class="grid grid-3" style="margin-bottom:var(--sp-6);">
+        <div class="panel">
+          <span class="text-overline">01 — 現場速度</span>
+          <p class="text-body" style="margin-top:8px;">レジ横で数秒迷えば売上を逃す。主要操作は2タップ以内、フォーカス移動は予測可能な順序にする。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">02 — 可逆性の可視化</span>
+          <p class="text-body" style="margin-top:8px;">取消・返金・解約など戻せない操作は、実行前に影響範囲を必ず提示し、二段階で確定させる。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">03 — 一つの語彙</span>
+          <p class="text-body" style="margin-top:8px;">オーナー・スタッフ・本部が同じ言葉と色分けで状態を読み取れる。役割ごとに言い換えない。</p>
+        </div>
+      </div>
+
+      <h3 class="text-h3" style="margin-bottom:var(--sp-3);">UX原則</h3>
+      <div class="grid grid-3" style="margin-bottom:var(--sp-6);">
+        <div class="panel">
+          <span class="text-overline">01 — サマリーが先</span>
+          <p class="text-body" style="margin-top:8px;">ダッシュボードは常に集計→内訳の順。明細を見る前に「今日は大丈夫か」が分かる。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">02 — 色だけに頼らない</span>
+          <p class="text-body" style="margin-top:8px;">状態表示は色＋アイコン＋テキストの三重化。色弱・高齢層・屋外の直射光下でも読める。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">03 — 待たせるときは見せる</span>
+          <p class="text-body" style="margin-top:8px;">入金処理・加盟店審査など非同期処理は必ず進捗状態を可視化し、無音で待たせない。</p>
+        </div>
+      </div>
+
+      <h3 class="text-h3" style="margin-bottom:var(--sp-3);">ブランド原則</h3>
+      <div class="grid grid-3">
+        <div class="panel">
+          <span class="text-overline">01 — クリムゾンは主役専用</span>
+          <p class="text-body" style="margin-top:8px;">ブランドの深紅は主要CTA・強調のみに限定。警告色（オレンジ系）と混同させない。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">02 — 装飾より信頼</span>
+          <p class="text-body" style="margin-top:8px;">「お金を預ける相手」としての実務的信頼感を優先。過度なグラデーション・装飾は避ける。</p>
+        </div>
+        <div class="panel">
+          <span class="text-overline">03 — 大きく、読みやすく</span>
+          <p class="text-body" style="margin-top:8px;">利用者の年齢層・店頭の視認環境を考慮し、標準より広めのコントラストと文字サイズを取る。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="foundations">
+      <div class="section-head">
+        <span class="kicker">02</span>
+        <h2 class="text-h1">Foundations</h2>
+        <p class="text-body lede">Design Tokensとして値を持つ最小単位。すべてCSSカスタムプロパティ／Figma Variablesとして参照可能（下部 Design Tokens 参照）。</p>
+      </div>
+
+      <div id="f-color">
+        <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Color</h3>
+        <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-4) !important;">ブランド色（クリムゾン）とエラー色（ヴァーミリオン）は意図的に色相をずらしている。「購入・強調」と「危険・破壊的操作」を色だけで混同させないための設計判断。</p>
+
+        <span class="text-overline">Brand — Crimson</span>
+        <div class="swatch-row" style="margin:8px 0 var(--sp-4);">
+          <div class="swatch" style="background:#FDECEC;color:#1C1A19;">50</div>
+          <div class="swatch" style="background:#FBD4D4;color:#1C1A19;">100</div>
+          <div class="swatch" style="background:#F5A8A8;color:#1C1A19;">200</div>
+          <div class="swatch" style="background:#D94F4F;">400</div>
+          <div class="swatch" style="background:#BF0000;">600 Base</div>
+          <div class="swatch" style="background:#9E0000;">700</div>
+          <div class="swatch" style="background:#7A0000;">800</div>
+        </div>
+
+        <span class="text-overline">Neutral — Gray（暖色寄りニュートラル）</span>
+        <div class="swatch-row" style="margin:8px 0 var(--sp-4);">
+          <div class="swatch" style="background:#FAF9F8;color:#1C1A19;">25</div>
+          <div class="swatch" style="background:#F5F3F2;color:#1C1A19;">50</div>
+          <div class="swatch" style="background:#EDEAE8;color:#1C1A19;">100</div>
+          <div class="swatch" style="background:#DED9D6;color:#1C1A19;">200</div>
+          <div class="swatch" style="background:#C7C0BC;color:#1C1A19;">300</div>
+          <div class="swatch" style="background:#A69D97;">400</div>
+          <div class="swatch" style="background:#857B76;">500</div>
+          <div class="swatch" style="background:#675F5B;">600</div>
+          <div class="swatch" style="background:#4C4643;">700</div>
+          <div class="swatch" style="background:#322E2C;">800</div>
+          <div class="swatch" style="background:#1C1A19;">900</div>
+        </div>
+
+        <div class="grid grid-2">
+          <div>
+            <span class="text-overline">Semantic — 状態色</span>
+            <div class="grid" style="grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+              <div class="badge badge-success"><span class="dot"></span>Success #167A34</div>
+              <div class="badge badge-warning"><span class="dot"></span>Warning #9A6203</div>
+              <div class="badge badge-error"><span class="dot"></span>Error #B83A15</div>
+              <div class="badge badge-info"><span class="dot"></span>Info #0F4FA3</div>
+            </div>
+          </div>
+          <div>
+            <span class="text-overline">Semantic — テキスト／境界</span>
+            <div class="doc-row" style="margin-top:8px;"><span class="k">Text</span><span class="v">Primary #1C1A19 / Secondary #675F5B / Tertiary #857B76 / Disabled #C7C0BC</span></div>
+            <div class="doc-row"><span class="k">Border</span><span class="v">Default #DED9D6 / Strong #A69D97 / Focus #1462C9</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border-default); margin:var(--sp-6) 0;">
+
+      <div id="f-type">
+        <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Typography</h3>
+        <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-4) !important;">UI書体は Hiragino Sans / Noto Sans JP、金額・ID等の数字整列には等幅の Data書体（Roboto Mono系）を使う。加盟店オーナー層の可読性を考慮し、Bodyは業界標準の14pxより1段階大きい15pxを基準にする。</p>
+        <div class="panel" style="display:flex; flex-direction:column; gap:14px;">
+          <div class="text-display">Display 28 / 700 — 本日の売上</div>
+          <div class="text-h1">H1 24 / 700 — 入金管理</div>
+          <div class="text-h2">H2 20 / 700 — 今月の取引一覧</div>
+          <div class="text-h3">H3 17 / 600 — 決済方法別内訳</div>
+          <div class="text-body-l">Body-L 16 / 400 — 加盟店契約に関する重要なお知らせです。</div>
+          <div class="text-body">Body 15 / 400 — 取消は決済当日23:59まで、店舗スタッフ権限で実行できます。</div>
+          <div class="text-body-s">Body-S 13 / 400 — 決済手数料は税込表示、入金は翌々営業日を基準とします。</div>
+          <div class="text-caption">CAPTION 12 / 500 — 最終更新: 2026-07-07 09:12</div>
+          <div class="text-overline">Overline — セクションラベル</div>
+          <div class="text-data-l">Data-L <span class="amount lg"><span class="yen">¥</span>128,450</span></div>
+          <div class="text-data">Data — 取引ID TXN-20260707-00214</div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border-default); margin:var(--sp-6) 0;">
+
+      <div id="f-space" class="grid grid-2">
+        <div>
+          <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Spacing</h3>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-3) !important;">4px基準。sp-1〜sp-8の8段階のみを使用し、中間値の即興指定を禁止する。</p>
+          <div style="display:flex; align-items:flex-end; gap:10px;">
+            <div style="text-align:center;"><div style="width:4px;height:4px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">1・4</span></div>
+            <div style="text-align:center;"><div style="width:8px;height:8px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">2・8</span></div>
+            <div style="text-align:center;"><div style="width:12px;height:12px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">3・12</span></div>
+            <div style="text-align:center;"><div style="width:16px;height:16px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">4・16</span></div>
+            <div style="text-align:center;"><div style="width:24px;height:24px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">5・24</span></div>
+            <div style="text-align:center;"><div style="width:32px;height:32px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">6・32</span></div>
+            <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">7・48</span></div>
+            <div style="text-align:center;"><div style="width:64px;height:64px;background:var(--brand);margin:0 auto 6px;"></div><span class="text-caption">8・64</span></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Radius</h3>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-3) !important;">sm=入力の子要素 / md=既定（ボタン・入力） / lg=カード / xl=モーダル・強調ブロック / full=ピル・アバター。</p>
+          <div style="display:flex; gap:14px; align-items:flex-end;">
+            <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--bg-surface-sunken);border:1px solid var(--border-default);border-radius:4px;margin-bottom:6px;"></div><span class="text-caption">sm 4</span></div>
+            <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--bg-surface-sunken);border:1px solid var(--border-default);border-radius:8px;margin-bottom:6px;"></div><span class="text-caption">md 8</span></div>
+            <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--bg-surface-sunken);border:1px solid var(--border-default);border-radius:12px;margin-bottom:6px;"></div><span class="text-caption">lg 12</span></div>
+            <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--bg-surface-sunken);border:1px solid var(--border-default);border-radius:16px;margin-bottom:6px;"></div><span class="text-caption">xl 16</span></div>
+            <div style="text-align:center;"><div style="width:48px;height:48px;background:var(--bg-surface-sunken);border:1px solid var(--border-default);border-radius:999px;margin-bottom:6px;"></div><span class="text-caption">full</span></div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border-default); margin:var(--sp-6) 0;">
+
+      <div id="f-elevation" class="grid grid-2">
+        <div>
+          <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Elevation（Shadow）</h3>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-3) !important;">XS=行内要素 / S=カード / M=トースト・ポップオーバー / L=モーダル・ドロワー / XL=フルスクリーンオーバーレイ。</p>
+          <div style="display:flex; gap:16px; flex-wrap:wrap;">
+            <div style="width:56px;height:56px;background:var(--bg-surface);border-radius:8px;box-shadow:var(--shadow-xs);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-tertiary);">XS</div>
+            <div style="width:56px;height:56px;background:var(--bg-surface);border-radius:8px;box-shadow:var(--shadow-s);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-tertiary);">S</div>
+            <div style="width:56px;height:56px;background:var(--bg-surface);border-radius:8px;box-shadow:var(--shadow-m);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-tertiary);">M</div>
+            <div style="width:56px;height:56px;background:var(--bg-surface);border-radius:8px;box-shadow:var(--shadow-l);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-tertiary);">L</div>
+            <div style="width:56px;height:56px;background:var(--bg-surface);border-radius:8px;box-shadow:var(--shadow-xl);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-tertiary);">XL</div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Border</h3>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-3) !important;">hairline/default=1px、thick/focus=2px。フォーカスリングは常にthickを使い、hover程度の強調にthickを流用しない。</p>
+          <div style="display:flex; gap:14px;">
+            <div style="width:80px;height:44px;border:1px solid var(--border-default);border-radius:6px;"></div>
+            <div style="width:80px;height:44px;border:2px solid var(--border-strong);border-radius:6px;"></div>
+            <div style="width:80px;height:44px;border:2px solid var(--border-focus);border-radius:6px;box-shadow:0 0 0 3px color-mix(in srgb, var(--border-focus) 25%, transparent);"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border-default); margin:var(--sp-6) 0;">
+
+      <div id="f-icon" class="grid grid-2">
+        <div>
+          <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Iconography</h3>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-3) !important;">24×24グリッドのラインアイコン、stroke=2px、currentColor。塗りつぶし（filled）アイコンは選択状態の強調のみに限定使用。sm=16 / md=20 / lg=24。</p>
+          <div style="display:flex; gap:18px; align-items:center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            <span class="text-caption">sm16 / md20 / lg24</span>
+          </div>
+        </div>
+        <div id="f-motion">
+          <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Motion</h3>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-3) !important;">instant=100ms（トグル）/ fast=150ms（hover）/ base=200ms（開閉）/ slow=300ms（ページ遷移）。<code>prefers-reduced-motion</code>で全アニメーションを実質無効化する。</p>
+          <div class="doc-row"><span class="k">Easing</span><span class="v">standard = cubic-bezier(.2,.8,.2,1) / emphasized = cubic-bezier(.3,0,.1,1)</span></div>
+        </div>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border-default); margin:var(--sp-6) 0;">
+
+      <div id="f-breakpoint">
+        <h3 class="text-h3" style="margin-bottom:var(--sp-2);">Breakpoints / Responsive Rules</h3>
+        <table class="t" style="margin-top:var(--sp-3);">
+          <tr><th>Token</th><th>幅</th><th>想定デバイス</th><th>レイアウトルール</th></tr>
+          <tr><td>sm</td><td class="text-data">375px</td><td>店頭スタッフのスマートフォン</td><td>単一カラム、ボトムタブ、金額は最優先で折返し禁止</td></tr>
+          <tr><td>md</td><td class="text-data">768px</td><td>タブレットPOS</td><td>2カラム可、サイドナビは折りたたみアイコンのみ</td></tr>
+          <tr><td>lg</td><td class="text-data">1024px</td><td>小型ノートPC</td><td>サイドナビ展開、テーブル横スクロール許容</td></tr>
+          <tr><td>xl</td><td class="text-data">1280px</td><td>標準デスクトップ（本部基準幅）</td><td>3カラムダッシュボード、テーブルは折返しなし</td></tr>
+          <tr><td>xxl</td><td class="text-data">1440px</td><td>ワイドデスクトップ</td><td>本文最大幅1180pxで頭打ち、余白を拡張</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <section id="components">
+      <div class="section-head">
+        <span class="kicker">03</span>
+        <h2 class="text-h1">Components</h2>
+        <p class="text-body lede">Atomic Designの Elements〜Components 層。全26種の指定コンポーネントに加え、加盟店ドメイン固有の9種を追加している。各カードは Purpose / Anatomy / Variants / States / Usage / Do・Don't を統一フォーマットで記載。</p>
+      </div>
+
+      <h3 id="c-inputs" class="text-h2" style="margin-bottom:var(--sp-4);">入力・操作</h3>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Button</h3><span class="purpose">加盟店が意図した金銭・状態変更を実行するための唯一の起点</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <button class="btn btn-primary">入金を申請する</button>
+            <button class="btn btn-secondary">CSVを出力</button>
+            <button class="btn btn-ghost">詳細を見る</button>
+            <button class="btn btn-danger">取消を確定</button>
+            <button class="btn btn-primary" disabled>処理中…</button>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>ラベル（動詞＋目的語で明言）</li><li>任意の左アイコン</li><li>ローディング時は右側にspinner</li></ul></span></div>
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">Primary</span><span class="micro-chip">Secondary</span><span class="micro-chip">Ghost</span><span class="micro-chip">Danger</span><span class="micro-chip">Size: sm/md</span></div></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Default</span><span class="micro-chip">Hover</span><span class="micro-chip">Focus</span><span class="micro-chip">Active</span><span class="micro-chip">Loading</span><span class="micro-chip">Disabled</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>1画面のPrimaryは常に1つ</li><li>Dangerは取消・退店・削除など不可逆操作専用</li><li>ラベルは結果と同じ言葉を使う（実行後トーストと一致させる）</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>「入金を申請する」のように結果が予測できる動詞句にする</div>
+              <div class="dont"><b>Don't</b>「送信する」のような汎用語やDangerをPrimaryの装飾として使わない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Text Field</h3><span class="purpose">店舗情報・金額など単一値の入力</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="field">
+              <label>店舗名</label>
+              <input class="input" value="楽天カフェ 渋谷店">
+              <span class="hint">加盟店契約書の登録名と一致させてください</span>
+            </div>
+            <div class="field is-error">
+              <label>返金額</label>
+              <input class="input" value="15,000,000">
+              <span class="err">取引金額（¥12,400）を超えています</span>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>ラベル（常時表示、placeholderで代替しない）</li><li>入力欄</li><li>ヘルプ/エラーテキスト</li></ul></span></div>
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">Text</span><span class="micro-chip">Number</span><span class="micro-chip">Currency</span><span class="micro-chip">With icon</span></div></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Default</span><span class="micro-chip">Focus</span><span class="micro-chip">Error</span><span class="micro-chip">Disabled</span><span class="micro-chip">Read-only</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>金額はData書体＋tabular-numsで右寄せ検討</li><li>エラーは入力直後ではなくblur/送信時に評価</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>上限・下限などの制約はヘルプテキストで先に提示する</div>
+              <div class="dont"><b>Don't</b>placeholderだけでラベルを省略しない（消えると意味を失う）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Select</h3><span class="purpose">決済方法・店舗・期間区分など既定の選択肢から1つ選ぶ</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="field">
+              <label>対象店舗</label>
+              <select class="select"><option>全店舗</option><option>渋谷店</option><option>新宿店</option></select>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>ラベル</li><li>選択トリガー＋シェブロン</li><li>ドロップダウンリスト</li></ul></span></div>
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">Single</span><span class="micro-chip">Multi(Chip表示)</span><span class="micro-chip">Searchable</span></div></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Default</span><span class="micro-chip">Open</span><span class="micro-chip">Disabled</span><span class="micro-chip">Empty(選択肢0件)</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>店舗数が11件を超える場合はSearchable variantを使う</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>選択中の値を常にトリガーに表示する</div>
+              <div class="dont"><b>Don't</b>2択のON/OFFにSelectを使わない（Switchを使う）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Checkbox / Radio / Switch</h3><span class="purpose">複数選択・単一選択・即時反映のON/OFF</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="flex-direction:column; align-items:flex-start; gap:14px;">
+            <label class="row"><input type="checkbox" class="chk" checked> 返金理由を加盟店にも通知する</label>
+            <label class="row"><input type="radio" class="radio" name="d1" checked> 当日締め</label>
+            <label class="row"><input type="radio" class="radio" name="d1"> 翌日締め</label>
+            <label class="row"><span class="switch"><input type="checkbox" checked><span class="track"></span><span class="knob"></span></span> 自動入金を有効化</label>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>コントロール＋ラベル（ラベルクリックでも切替可能）</li></ul></span></div>
+            <div class="doc-row"><span class="k">使い分け</span><span class="v"><ul><li>Checkbox=複数選択／確認同意</li><li>Radio=択一（保存操作を伴う）</li><li>Switch=即時反映される設定のON/OFF</li></ul></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Unchecked</span><span class="micro-chip">Checked</span><span class="micro-chip">Indeterminate</span><span class="micro-chip">Disabled</span></div></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>Switchは切替と同時に確定（保存ボタン不要）にする</div>
+              <div class="dont"><b>Don't</b>「保存」ボタンが必要な設定にSwitchを使わない（誤解を生む）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Search</h3><span class="purpose">取引ID・店舗名などから対象を絞り込む</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="search-demo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+              <input placeholder="取引ID・店舗名で検索">
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>検索アイコン</li><li>入力欄</li><li>件数超過時の絞り込み誘導テキスト</li></ul></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Empty</span><span class="micro-chip">Typing</span><span class="micro-chip">No results</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>300msデバウンス後に検索実行、実行中はスケルトンで結果領域を示す</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>「取引ID・店舗名で検索」など検索対象を明記する</div>
+              <div class="dont"><b>Don't</b>Enter必須にしない（入力しながら絞り込めることを期待させる）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Filter</h3><span class="purpose">期間・決済方法・店舗など複数条件の絞り込み</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="filter-bar">
+              <div class="chip selected">決済方法: QRコード <button aria-label="解除">×</button></div>
+              <div class="chip">期間: 今月 <button aria-label="解除">×</button></div>
+              <button class="btn btn-ghost btn-sm">+ 条件を追加</button>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>適用中条件のChip列</li><li>条件追加トリガー</li><li>全解除リンク</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>3条件を超えたら「フィルタ(3)」に折りたたみ、モバイルはボトムシート化</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>適用中の条件を常にChipで可視化する</div>
+              <div class="dont"><b>Don't</b>適用後に条件が見えなくなる非表示UIにしない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Pagination</h3><span class="purpose">取引一覧など大量データの分割送り</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="pager">
+              <button aria-label="前へ">‹</button>
+              <button class="active">1</button><button>2</button><button>3</button><span>…</span><button>24</button>
+              <button aria-label="次へ">›</button>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">番号型</span><span class="micro-chip">前へ/次へのみ（モバイル）</span><span class="micro-chip">無限スクロール（明細のみ）</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>金額の突合作業を伴う一覧は番号型必須（無限スクロール禁止＝ページの再現性を担保）</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>現在ページを太字＋Brand色で明示する</div>
+              <div class="dont"><b>Don't</b>会計突合を伴う画面で無限スクロールのみにしない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Tooltip</h3><span class="purpose">アイコンボタンや専門用語の補足説明</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="tooltip-demo">
+              <button class="btn btn-secondary btn-sm">手数料率 ⓘ</button>
+              <div class="tooltip-bubble">中小事業者向け特別料率が適用中です</div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>トリガー（ⓘアイコン推奨）</li><li>吹き出し＋矢印</li></ul></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Hover</span><span class="micro-chip">Focus(キーボード)</span></div></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>キーボードフォーカスでも同じ内容を表示する</div>
+              <div class="dont"><b>Don't</b>操作に必須の情報をTooltipだけに格納しない（タッチ操作では出せない）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="c-status" class="text-h2" style="margin:var(--sp-6) 0 var(--sp-4);">ステータス・ラベル</h3>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Badge（Status Badge）</h3><span class="purpose">取引・入金・審査の状態を色＋アイコン＋テキストの三重表現で示す</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <span class="badge badge-success"><span class="dot"></span>入金完了</span>
+            <span class="badge badge-warning"><span class="dot"></span>保留中</span>
+            <span class="badge badge-error"><span class="dot"></span>決済エラー</span>
+            <span class="badge badge-info"><span class="dot"></span>審査中</span>
+            <span class="badge badge-neutral"><span class="dot"></span>下書き</span>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>状態ドット</li><li>状態テキスト（名詞＋完了/中/エラー等）</li></ul></span></div>
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">Success</span><span class="micro-chip">Warning</span><span class="micro-chip">Error</span><span class="micro-chip">Info</span><span class="micro-chip">Neutral</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>テーブル内では常に同じ列位置に固定し、視線移動を最小化</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>色相の違いに加えて必ずテキストで状態名を書く</div>
+              <div class="dont"><b>Don't</b>色のドットだけで状態を表現しない（色弱・モノクロ印刷で判別不能）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Chip</h3><span class="purpose">適用中の絞り込み条件・選択済みタグの表示と解除</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="chip">現金</div>
+            <div class="chip selected">QRコード決済 <button>×</button></div>
+            <div class="chip">クレジットカード <button>×</button></div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>テキスト</li><li>任意の削除ボタン</li></ul></span></div>
+            <div class="doc-row"><span class="k">States</span><span class="v"><div class="chiprow"><span class="micro-chip">Default</span><span class="micro-chip">Selected</span><span class="micro-chip">Disabled</span></div></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>削除ボタンのヒット領域を最低24×24pxにする</div>
+              <div class="dont"><b>Don't</b>ステータス表示にChipを流用しない（BadgeとChipの役割を混在させない）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Tag（Role Tag）</h3><span class="purpose">アカウントの権限区分（オーナー／スタッフ／閲覧のみ）を常時表示</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <span class="tag tag-owner">オーナー</span>
+            <span class="tag tag-staff">スタッフ</span>
+            <span class="tag tag-readonly">閲覧のみ</span>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>角丸小のラベル（Badgeより角丸を抑え、恒常表示であることを区別）</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>ユーザー一覧・操作ログ・承認申請の申請者名の隣に必ず併記する</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>権限に応じて操作可能なボタンの活性/非活性と一致させる</div>
+              <div class="dont"><b>Don't</b>閲覧のみユーザーの画面でPrimaryボタンを活性表示しない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Amount Display</h3><span class="purpose">金額を桁ズレなく・符号を誤認なく提示する（本DS最重要コンポーネント）</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="flex-direction:column; gap:10px; align-items:flex-start;">
+            <span class="amount lg"><span class="yen">¥</span>128,450</span>
+            <span class="amount positive">+ ¥3,200（入金）</span>
+            <span class="amount negative">− ¥1,800（返金）</span>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>通貨記号（本文比0.6emで控えめに）</li><li>3桁カンマ区切りの数値（Data書体・tabular-nums）</li><li>任意の符号＋用途ラベル</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>入金は緑、返金・取消・手数料控除は必ずマイナス表記＋error色</li><li>一覧の金額列は右揃え、桁を必ず揃える</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>マイナス金額は「−」記号とerror色を両方使う（どちらか単独にしない）</div>
+              <div class="dont"><b>Don't</b>括弧だけでマイナスを表現しない（読み上げソフトが符号を読めない）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="c-layout" class="text-h2" style="margin:var(--sp-6) 0 var(--sp-4);">レイアウト・ナビゲーション</h3>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Card</h3><span class="purpose">サマリー数値・店舗情報など関連情報のまとまりを面で示す</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="card-demo">
+              <span class="cap">本日の売上</span>
+              <div class="amount lg" style="margin-top:4px;"><span class="yen">¥</span>84,200</div>
+              <div class="badge badge-success" style="margin-top:8px;"><span class="dot"></span>前日比 +12%</div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>任意のCaption</li><li>主情報（数値 or 見出し）</li><li>任意の補助行・アクション</li></ul></span></div>
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">Stat Card</span><span class="micro-chip">List Item Card</span><span class="micro-chip">Clickable Card</span></div></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>クリック可能なCardはhoverでshadowをS→Mに変化させ操作可能性を示す</div>
+              <div class="dont"><b>Don't</b>Cardの中にCardを入れ子にしない（階層が曖昧になる）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Table</h3><span class="purpose">取引明細など多件数データの突合・スキャンに使う中核コンポーネント</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="width:100%;">
+            <table class="t">
+              <tr><th>日時</th><th>店舗</th><th>金額</th><th>状態</th></tr>
+              <tr><td class="text-data">07/07 09:12</td><td>渋谷店</td><td class="amount">¥3,200</td><td><span class="badge badge-success" style="padding:2px 8px;font-size:11px;"><span class="dot"></span>完了</span></td></tr>
+              <tr><td class="text-data">07/07 09:08</td><td>新宿店</td><td class="amount negative">−¥1,800</td><td><span class="badge badge-warning" style="padding:2px 8px;font-size:11px;"><span class="dot"></span>返金処理中</span></td></tr>
+            </table>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>固定ヘッダー行</li><li>データ行（hoverでsunken背景）</li><li>金額列は右揃え・Data書体</li></ul></span></div>
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">Compact（店頭用）</span><span class="micro-chip">Comfortable（本部用）</span><span class="micro-chip">選択可能（一括操作）</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>横幅超過時は横スクロールをテーブル自身に閉じ込め、ページ全体はスクロールさせない</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>金額・日時は必ずtabular-numsで桁位置を揃える</div>
+              <div class="dont"><b>Don't</b>状態列の位置を画面ごとに変えない（列順序はサービス全体で固定）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Tabs</h3><span class="purpose">同一データの見方（一覧/グラフ等）や期間の切替</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="width:100%;">
+            <div class="tabs">
+              <div class="tab active">取引一覧</div>
+              <div class="tab">入金履歴</div>
+              <div class="tab">返金・取消</div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>3〜5個までを目安に。6個以上はSelectかSidebarに切り替える</li><li>URLと同期し、リロード後も選択タブを保持する</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>現在のタブをBrand色の下線＋太字の二重表現にする</div>
+              <div class="dont"><b>Don't</b>互いに排他的でない項目（並行して見たい情報）にTabsを使わない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Navigation / Sidebar</h3><span class="purpose">機能領域（売上/入金/店舗設定等）間の大域移動</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="sidenav-demo">
+              <a class="active">ダッシュボード</a>
+              <a>取引管理</a>
+              <a>入金管理</a>
+              <a>店舗設定</a>
+              <a>アカウント・権限</a>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>ロゴ／店舗切替（最上部）</li><li>主要ナビ項目（アイコン＋ラベル）</li><li>現在地インジケータ</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>lg未満はアイコンのみに折りたたみ、md未満はボトムナビに変形</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>権限で非表示にする項目は完全に隠す（グレーアウトで見せて誤タップさせない）</div>
+              <div class="dont"><b>Don't</b>7項目を超えるフラットな羅列にしない（グルーピングする）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Header</h3><span class="purpose">現在の店舗コンテキスト・通知・アカウントへの常時アクセス</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="width:100%;">
+            <div class="header-demo">
+              <div class="storeswitch"><span class="avatar">渋</span> 渋谷店 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+              <div class="row" style="gap:14px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+                <span class="tag tag-owner">オーナー</span>
+              </div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>店舗切替（Store Switcher）</li><li>通知ベル（未読ドット）</li><li>アカウント／権限タグ</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>複数店舗運営者には常にどの店舗を見ているかを固定表示する</div>
+              <div class="dont"><b>Don't</b>店舗コンテキストをページ内に埋没させない（誤店舗での操作事故を招く）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Breadcrumb</h3><span class="purpose">階層の深い設定画面での現在地確認</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="breadcrumb"><span>店舗設定</span><span>›</span><span>渋谷店</span><span>›</span><b>決済手数料</b></div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>3階層以上の設定・審査系フローにのみ使用。ダッシュボード直下では省略</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>各階層をクリック可能にし、上位への即時離脱を保証する</div>
+              <div class="dont"><b>Don't</b>Tabsの代わりに使わない（階層移動と並列切替を混同しない）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="c-overlay" class="text-h2" style="margin:var(--sp-6) 0 var(--sp-4);">オーバーレイ・フィードバック</h3>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Modal</h3><span class="purpose">現在の文脈を保ったまま完結させる短い操作（設定変更・確認）</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="background:var(--bg-overlay-scrim);">
+            <div class="modal-demo">
+              <h4>自動入金を有効化しますか？</h4>
+              <p>翌々営業日から売上金が自動で指定口座に入金されます。</p>
+              <div style="display:flex; gap:8px; justify-content:flex-end;">
+                <button class="btn btn-secondary btn-sm">キャンセル</button>
+                <button class="btn btn-primary btn-sm">有効化する</button>
+              </div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>スクリム</li><li>見出し（問い）</li><li>本文（結果の説明）</li><li>アクション（キャンセル＋実行、実行を右に）</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>Escキー・スクリムクリックで閉じる（＝キャンセル扱い）</li><li>フォーカスはModal内にトラップし、閉時に元のトリガーへ戻す</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>見出しは疑問形にし、実行後に何が起きるかを本文で先に言う</div>
+              <div class="dont"><b>Don't</b>複数手順のフォームをModalに詰め込まない（Drawerか専用画面にする）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Drawer</h3><span class="purpose">一覧を見失わずに詳細確認・入力を行う（取引詳細、店舗編集）</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="background:var(--bg-overlay-scrim); justify-content:flex-end;">
+            <div class="drawer-demo">
+              <h4 class="text-h3">取引詳細</h4>
+              <p class="text-body-s" style="color:var(--text-secondary); margin:6px 0 var(--sp-3) !important;">TXN-20260707-00214</p>
+              <div class="amount lg"><span class="yen">¥</span>3,200</div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>一覧文脈を保持したい詳細確認・軽い編集に使用（Modalより長い内容向け）</li><li>lg未満は画面全体を覆うフルスクリーンDrawerに切替</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>閉じても一覧のスクロール位置・フィルタ状態を保持する</div>
+              <div class="dont"><b>Don't</b>Drawer内からさらにDrawerを開く多重化をしない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Toast</h3><span class="purpose">操作結果を一過性に伝える（ページ遷移させない）</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="flex-direction:column; gap:10px;">
+            <div class="toast success">入金を申請しました</div>
+            <div class="toast error">決済の取消に失敗しました。もう一度お試しください</div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>ボタンのラベルと同じ語彙で結果を言う（「申請する」→「申請しました」）</li><li>成功は4秒で自動消滅、エラーは手動で閉じるまで残す</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>失敗時は次の行動（再試行/問い合わせ）を明記する</div>
+              <div class="dont"><b>Don't</b>金額を伴う重大な失敗（入金エラー等）をToastだけで済ませない（Bannerも併用）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Empty State</h3><span class="purpose">データが0件のとき、次の行動へ誘導する</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="state-box">
+              <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></div>
+              <b class="text-body-s" style="color:var(--text-primary);">この期間の取引はまだありません</b>
+              <span>期間を変更するか、決済端末で最初の取引をお試しください</span>
+              <button class="btn btn-secondary btn-sm">期間を変更</button>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">使い分け</span><span class="v"><ul><li>「未生成」（初回導入直後）と「絞り込み結果0件」でメッセージと導線を変える</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>0件の理由（未発生／絞り込み過多）を推測して言い切る</div>
+              <div class="dont"><b>Don't</b>「データがありません」とだけ表示して終わらせない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Error State</h3><span class="purpose">読み込み失敗・通信断を、責任の所在を明確にして伝える</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="state-box error">
+              <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg></div>
+              <b class="text-body-s" style="color:var(--text-primary);">取引データを読み込めませんでした</b>
+              <span>通信状況をご確認のうえ、再読み込みしてください</span>
+              <button class="btn btn-danger btn-sm">再読み込み</button>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>謝罪文を書かない。原因の推定＋次の一手のみを述べる</li><li>オフライン検知時は専用バナーと併用（店頭Wi-Fi不安定を想定）</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>再試行ボタンを必ず併置する</div>
+              <div class="dont"><b>Don't</b>「エラーが発生しました」だけの汎用文言にしない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Loading</h3><span class="purpose">待機中であることと、待ち時間の見込みを示す</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="flex-direction:column; gap:14px; align-items:flex-start;">
+            <div class="row"><div class="spinner"></div><span>入金処理を確認しています…</span></div>
+            <div style="display:flex; flex-direction:column; gap:6px; width:220px;">
+              <div class="skeleton" style="height:14px;width:60%;"></div>
+              <div class="skeleton" style="height:14px;width:90%;"></div>
+              <div class="skeleton" style="height:14px;width:75%;"></div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">使い分け</span><span class="v"><ul><li>Spinner=数秒以内の単発処理／Skeleton=一覧・カードの初期読み込み</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>Skeletonは実際のレイアウト（行数・列幅）に近似させる</div>
+              <div class="dont"><b>Don't</b>3秒を超える処理でSpinnerのみを無言表示し続けない（経過や次の案内を出す）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Confirm Dialog（破壊的操作確認）</h3><span class="purpose">取消・退店・権限剥奪など戻せない操作を二段階で確定させる／Design Principle 02の実装</span></div>
+        <div class="comp-body">
+          <div class="comp-preview" style="background:var(--bg-overlay-scrim);">
+            <div class="confirm-demo">
+              <h4 class="text-h3">この決済を取り消しますか？</h4>
+              <p class="text-body-s" style="color:var(--text-secondary); margin:8px 0 var(--sp-3) !important;">¥3,200（渋谷店・07/07 09:12）が加盟店に返金されます。この操作は取り消せません。</p>
+              <div style="display:flex; gap:8px; justify-content:flex-end;">
+                <button class="btn btn-secondary btn-sm">やめる</button>
+                <button class="btn btn-danger btn-sm">取消を確定する</button>
+              </div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>上部に error色のアクセントライン（他のModalと視覚的に区別）</li><li>影響範囲の明記（対象・金額・不可逆である旨）</li><li>非破壊アクションを左、破壊アクションを右に配置</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>金額が関わる取消・返金は必ずこのVariantを使用（通常のModalで代替しない）</li><li>高額（設定閾値超）はさらに数量入力等の追加確認を挟む</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>「この操作は取り消せません」を本文に明文化する</div>
+              <div class="dont"><b>Don't</b>window.confirm等のブラウザ標準ダイアログで代替しない（文言・スタイルを制御できない）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="c-domain" class="text-h2" style="margin:var(--sp-6) 0 var(--sp-4);">加盟店ドメイン固有コンポーネント</h3>
+      <p class="text-body-s" style="color:var(--text-secondary); margin-bottom:var(--sp-4) !important;">Step8のUI要件分析（複数店舗運営・入金サイクル・レジ現場）から導出した、汎用DSカタログにはないコンポーネント。</p>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Store Switcher</h3><span class="purpose">複数店舗運営者が「今どの店舗を見ているか」を常に把握する</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="storeswitch"><span class="avatar">渋</span> 渋谷店（3/12店舗中） <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>店舗イニシャルのアバター</li><li>店舗名＋件数コンテキスト</li><li>切替トリガー（クリックで検索可能なリスト）</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>Headerに常時固定。金額を伴う操作の直前には選択中店舗名を再掲する（誤店舗操作防止）</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>「全店舗」集計モードと「単一店舗」モードを視覚的に区別する（アバターの有無等）</div>
+              <div class="dont"><b>Don't</b>店舗切替を設定画面の奥に隠さない（現場での切替頻度は高い）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Deposit Summary Card</h3><span class="purpose">次回入金額・入金予定日・保留金額を一目で確認する</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="deposit-card">
+              <span class="text-overline">次回入金予定</span>
+              <div class="amount lg" style="margin-top:4px;"><span class="yen">¥</span>412,800</div>
+              <div class="row2">
+                <span class="text-caption">2026-07-09（木）予定</span>
+                <span class="badge badge-warning" style="padding:2px 8px;font-size:11px;">保留 ¥6,400</span>
+              </div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>入金予定額（主役）</li><li>入金予定日</li><li>保留・審査中金額（あれば必ず併記）</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>保留金額がある場合は理由をクリックで展開できるようにする（不信感の防止）</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>保留金額を隠さず主要金額の隣に必ず表示する</div>
+              <div class="dont"><b>Don't</b>入金額と保留額を合算して1つの数字にしない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Date Range Picker</h3><span class="purpose">売上・入金の集計期間を選ぶ（会計締め日と連動）</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="daterange">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+              2026-07-01 〜 07-07
+              <span class="badge badge-neutral" style="padding:2px 8px;font-size:11px;">今月</span>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Variants</span><span class="v"><div class="chiprow"><span class="micro-chip">プリセット（今日/今週/今月/任意）</span><span class="micro-chip">カスタム範囲</span></div></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>既定は「今日」。会計締め設定（当日締め/翌日締め）に応じて日境界を表示に明記する</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>選択中の範囲を常にラベルとして残す（戻ってきたとき再認識できる）</div>
+              <div class="dont"><b>Don't</b>タイムゾーン・締め時刻の解釈をユーザーの推測に委ねない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Transaction Row</h3><span class="purpose">一覧上で1件の取引を「状態が最初に目に入る」順序で並べる</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div style="width:100%; max-width:320px; border:1px solid var(--border-default); border-radius:var(--radius-md); overflow:hidden;">
+              <div class="txrow">
+                <div class="l"><span>QRコード決済</span><span class="t">07/07 09:12 ・ 渋谷店</span></div>
+                <div style="text-align:right;"><div class="amount">¥3,200</div><span class="badge badge-success" style="padding:1px 7px;font-size:10px;">完了</span></div>
+              </div>
+              <div class="txrow" style="border-bottom:none;">
+                <div class="l"><span>クレジットカード</span><span class="t">07/07 09:08 ・ 新宿店</span></div>
+                <div style="text-align:right;"><div class="amount negative">−¥1,800</div><span class="badge badge-warning" style="padding:1px 7px;font-size:10px;">返金処理中</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>決済方法＋日時・店舗（左）</li><li>金額＋状態Badge（右、常に固定位置）</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>Tableのモバイル代替として、md未満ではTableではなくこのRow積層を使う</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>タップで詳細Drawerを開く（行全体をヒット領域にする）</div>
+              <div class="dont"><b>Don't</b>状態Badgeの位置を行によって左右入れ替えない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>NumPad（決済端末キーパッド）</h3><span class="purpose">レジ現場でタッチ操作のみで金額を確実に入力する</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="numpad">
+              <button>1</button><button>2</button><button>3</button>
+              <button>4</button><button>5</button><button>6</button>
+              <button>7</button><button>8</button><button>9</button>
+              <button>C</button><button>0</button><button class="op">確定</button>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Anatomy</span><span class="v"><ul><li>44×44px以上のタッチターゲット（片手操作・グローブ着用を考慮）</li><li>Clear／確定は色と位置で明確に区別</li></ul></span></div>
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>入力中は上部にAmount Display（lg）でリアルタイム反映</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>確定ボタンをBrand色で強調し、誤タップ時のClearを隣接させない</div>
+              <div class="dont"><b>Don't</b>キーの並びを一般的な電卓/テンキー配列から変更しない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comp">
+        <div class="comp-head"><h3>Receipt Preview</h3><span class="purpose">発行前レシートの内容を確認する（返金・再発行時の突合に必須）</span></div>
+        <div class="comp-body">
+          <div class="comp-preview">
+            <div class="receipt">
+              <div class="line"><span>楽天カフェ 渋谷店</span></div>
+              <div class="line"><span>2026-07-07 09:12</span></div>
+              <hr>
+              <div class="line"><span>アイスコーヒー</span><span>¥380</span></div>
+              <div class="line"><span>QRコード決済</span></div>
+              <hr>
+              <div class="line"><b>合計</b><b>¥380</b></div>
+            </div>
+          </div>
+          <div class="comp-doc">
+            <div class="doc-row"><span class="k">Usage</span><span class="v"><ul><li>返金・取消フローのConfirm Dialogに必ず併置し、対象取引の実在を視覚確認させる</li></ul></span></div>
+            <div class="dodont">
+              <div class="do"><b>Do</b>等幅フォントでレシート実物に近い体裁にする（現物との突合を速くする）</div>
+              <div class="dont"><b>Don't</b>合計金額をハイライトなしの本文と同じ扱いにしない</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="patterns">
+      <div class="section-head">
+        <span class="kicker">04</span>
+        <h2 class="text-h1">Patterns</h2>
+        <p class="text-body lede">複数コンポーネントを組み合わせた画面レベルの型。加盟店コンソールでの代表画面を1件ずつ紐付けている。</p>
+      </div>
+      <div class="grid grid-3">
+        <div class="pattern-card"><h4><span class="tag-num">1</span>Form</h4><p class="text-body-s" style="color:var(--text-secondary);">例：振込口座変更、店舗基本情報編集。変更内容の差分プレビュー→Confirm Dialogで確定。Text Field / Select / Switch を使用。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">2</span>Search</h4><p class="text-body-s" style="color:var(--text-secondary);">例：取引ID・伝票番号の検索。Search＋Filterを併置し、結果0件時はEmpty Stateへ。300msデバウンス。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">3</span>CRUD</h4><p class="text-body-s" style="color:var(--text-secondary);">例：スタッフアカウント管理。一覧Table→Drawerで編集→Confirm Dialogで権限剥奪・削除を確定。Role Tagで一覧上に権限を常時表示。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">4</span>Dashboard</h4><p class="text-body-s" style="color:var(--text-secondary);">例：ホーム画面。Deposit Summary Card＋本日売上Card＋直近Transaction Rowの順で、集計→内訳の原則を体現。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">5</span>List</h4><p class="text-body-s" style="color:var(--text-secondary);">例：取引一覧。lg以上はTable、md未満はTransaction Rowの積層。Paginationは番号型固定（突合作業のため）。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">6</span>Detail</h4><p class="text-body-s" style="color:var(--text-secondary);">例：取引詳細。DrawerでReceipt Preview＋状態Badge＋アクション（返金/再発行）を表示。一覧文脈を保持。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">7</span>Wizard</h4><p class="text-body-s" style="color:var(--text-secondary);">例：加盟店追加審査申請。ステップは価値提示（手数料メリット）を要求（本人確認書類等）より先に見せる（Design OS品質原則「価値→要求」）。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">8</span>Authentication</h4><p class="text-body-s" style="color:var(--text-secondary);">例：ログイン・二要素認証。オーナー/スタッフでログイン後の到達画面を分岐。パスワードでなくSMS/生体認証を優先動線に。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">9</span>Payment（取消・返金）</h4><p class="text-body-s" style="color:var(--text-secondary);">例：決済取消。Transaction Row選択→Receipt Preview→Confirm Dialog（Danger）→Toastの順。Design Principle 02の主戦場。</p></div>
+        <div class="pattern-card"><h4><span class="tag-num">10</span>Notification</h4><p class="text-body-s" style="color:var(--text-secondary);">例：入金完了・審査結果通知。Header通知ベル＋一覧。金額を含む通知はAmount Display形式を踏襲する。</p></div>
+      </div>
+    </section>
+
+    <section id="a11y">
+      <div class="section-head">
+        <span class="kicker">05</span>
+        <h2 class="text-h1">Accessibility</h2>
+        <p class="text-body lede">対象は幅広い年齢層・ITリテラシーの店舗事業者。WCAG 2.1 AA準拠を最低基準とし、金銭操作画面は一部AAAの水準（コントラスト等）を上回る設定にしている。</p>
+      </div>
+      <div class="a11y-item">
+        <div class="ic">AA</div>
+        <div>
+          <h4 class="text-h3">WCAG AA</h4>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">通常テキストはコントラスト比4.5:1以上、金額・状態Badgeなど判断に直結する要素は 7:1 相当を目標値とする。全ページで <code>lang="ja"</code> と見出し階層（h1→h2→h3の飛び越え禁止）を維持。</p>
+        </div>
+      </div>
+      <div class="a11y-item">
+        <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="3"/></svg></div>
+        <div>
+          <h4 class="text-h3">Focus</h4>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">フォーカスリングは常に2px・Info色（ブランド色と混同しない色相）で表示し、非表示化（<code>outline:none</code>単独指定）を禁止。Modal/Drawerはopen時にフォーカスをトラップし、close時に呼び出し元へ復帰させる。</p>
+        </div>
+      </div>
+      <div class="a11y-item">
+        <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M4 6h16M4 18h16"/></svg></div>
+        <div>
+          <h4 class="text-h3">Keyboard</h4>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">全操作をTab/Shift+Tab/Enter/Escapeのみで完結できること。特にConfirm Dialogは実行ボタンへのTab到達順を「キャンセル→実行」の固定順にし、誤ってEnter連打で確定しないよう既定フォーカスは非破壊側に置く。</p>
+        </div>
+      </div>
+      <div class="a11y-item">
+        <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10v4h4l5 5V5l-5 5H3z"/></svg></div>
+        <div>
+          <h4 class="text-h3">Screen Reader</h4>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">Badge/Amount Displayの色は<code>aria-hidden</code>のドットではなく、状態名・符号を含むテキストとして読み上げられる構造にする。Toast/Bannerは<code>role="status"</code>（成功）/<code>role="alert"</code>（エラー）を使い分ける。</p>
+        </div>
+      </div>
+      <div class="a11y-item" style="border-bottom:none;">
+        <div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M2 12h2M20 12h2M12 2v2M12 20v2"/></svg></div>
+        <div>
+          <h4 class="text-h3">Contrast</h4>
+          <p class="text-body-s" style="color:var(--text-secondary); margin-top:4px !important;">Brand crimson（#BF0000 系統）は白背景での本文使用時に太字・16px以上での運用に限定し、細字での長文には使わない。Dark themeのBrandトーンは可読性のため crimson-400 に引き上げ、600番台はDark背景では使用しない。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tokens">
+      <div class="section-head">
+        <span class="kicker">06</span>
+        <h2 class="text-h1">Design Tokens</h2>
+        <p class="text-body lede">W3C Design Tokens（DTCG）形式のJSON。Tokens Studio for Figma でインポートすれば Figma Variables に、Style Dictionary を通せば Storybook / CSS Custom Properties に変換できる構造。<code>{group.token}</code> によるエイリアス参照を含む。</p>
+      </div>
+      <div class="token-actions">
+        <button class="btn btn-secondary btn-sm" onclick="copyTokens()">JSONをコピー</button>
+        <button class="btn btn-ghost btn-sm" onclick="downloadTokens()">ダウンロード (.json)</button>
+      </div>
+      <pre id="token-json">{
+  "$description": "Rakuten Pay Merchant Console Design Tokens — W3C Design Tokens (DTCG) format. Compatible with Tokens Studio for Figma (→ Figma Variables) and Style Dictionary (→ Storybook / CSS custom properties).",
+  "color": {
+    "primitive": {
+      "crimson": {
+        "50":  { "$value": "#FDECEC", "$type": "color" },
+        "100": { "$value": "#FBD4D4", "$type": "color" },
+        "200": { "$value": "#F5A8A8", "$type": "color" },
+        "300": { "$value": "#E97A7A", "$type": "color" },
+        "400": { "$value": "#D94F4F", "$type": "color" },
+        "500": { "$value": "#C22B2B", "$type": "color" },
+        "600": { "$value": "#BF0000", "$type": "color", "$description": "Rakuten brand crimson. Use for primary brand emphasis only." },
+        "700": { "$value": "#9E0000", "$type": "color" },
+        "800": { "$value": "#7A0000", "$type": "color" },
+        "900": { "$value": "#560000", "$type": "color" }
+      },
+      "gray": {
+        "0":   { "$value": "#FFFFFF", "$type": "color" },
+        "25":  { "$value": "#FAF9F8", "$type": "color" },
+        "50":  { "$value": "#F5F3F2", "$type": "color" },
+        "100": { "$value": "#EDEAE8", "$type": "color" },
+        "200": { "$value": "#DED9D6", "$type": "color" },
+        "300": { "$value": "#C7C0BC", "$type": "color" },
+        "400": { "$value": "#A69D97", "$type": "color" },
+        "500": { "$value": "#857B76", "$type": "color" },
+        "600": { "$value": "#675F5B", "$type": "color" },
+        "700": { "$value": "#4C4643", "$type": "color" },
+        "800": { "$value": "#322E2C", "$type": "color" },
+        "900": { "$value": "#1C1A19", "$type": "color" }
+      },
+      "green":  { "50": { "$value": "#EAF7EE", "$type": "color" }, "500": { "$value": "#1E8E3E", "$type": "color" }, "600": { "$value": "#167A34", "$type": "color" }, "700": { "$value": "#0F5C27", "$type": "color" } },
+      "amber":  { "50": { "$value": "#FDF3E0", "$type": "color" }, "500": { "$value": "#B87503", "$type": "color" }, "600": { "$value": "#9A6203", "$type": "color" }, "700": { "$value": "#7A4E02", "$type": "color" } },
+      "vermilion": {
+        "50": { "$value": "#FDEEEA", "$type": "color" }, "500": { "$value": "#D6491F", "$type": "color" }, "600": { "$value": "#B83A15", "$type": "color" }, "700": { "$value": "#942D0F", "$type": "color" },
+        "$description": "Error hue. Deliberately shifted orange-red — distinct from brand crimson so 'error' is never confused with 'brand/primary'."
+      },
+      "blue": { "50": { "$value": "#EAF2FE", "$type": "color" }, "500": { "$value": "#1462C9", "$type": "color" }, "600": { "$value": "#0F4FA3", "$type": "color" }, "700": { "$value": "#0B3D80", "$type": "color" } }
+    },
+    "semantic": {
+      "light": {
+        "bg-canvas": { "$value": "{color.primitive.gray.25}", "$type": "color" },
+        "bg-surface": { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "bg-surface-sunken": { "$value": "{color.primitive.gray.50}", "$type": "color" },
+        "bg-inverse": { "$value": "{color.primitive.gray.900}", "$type": "color" },
+        "bg-overlay-scrim": { "$value": "rgba(28,26,25,0.48)", "$type": "color" },
+        "text-primary": { "$value": "{color.primitive.gray.900}", "$type": "color" },
+        "text-secondary": { "$value": "{color.primitive.gray.600}", "$type": "color" },
+        "text-tertiary": { "$value": "{color.primitive.gray.500}", "$type": "color" },
+        "text-disabled": { "$value": "{color.primitive.gray.300}", "$type": "color" },
+        "text-on-brand": { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "text-link": { "$value": "{color.primitive.blue.600}", "$type": "color" },
+        "border-default": { "$value": "{color.primitive.gray.200}", "$type": "color" },
+        "border-strong": { "$value": "{color.primitive.gray.400}", "$type": "color" },
+        "border-focus": { "$value": "{color.primitive.blue.500}", "$type": "color" },
+        "brand-primary": { "$value": "{color.primitive.crimson.600}", "$type": "color" },
+        "brand-primary-hover": { "$value": "{color.primitive.crimson.700}", "$type": "color" },
+        "brand-primary-active": { "$value": "{color.primitive.crimson.800}", "$type": "color" },
+        "brand-subtle-bg": { "$value": "{color.primitive.crimson.50}", "$type": "color" },
+        "success": { "$value": "{color.primitive.green.600}", "$type": "color" },
+        "success-bg": { "$value": "{color.primitive.green.50}", "$type": "color" },
+        "warning": { "$value": "{color.primitive.amber.600}", "$type": "color" },
+        "warning-bg": { "$value": "{color.primitive.amber.50}", "$type": "color" },
+        "error": { "$value": "{color.primitive.vermilion.600}", "$type": "color" },
+        "error-bg": { "$value": "{color.primitive.vermilion.50}", "$type": "color" },
+        "info": { "$value": "{color.primitive.blue.600}", "$type": "color" },
+        "info-bg": { "$value": "{color.primitive.blue.50}", "$type": "color" }
+      },
+      "dark": {
+        "bg-canvas": { "$value": "{color.primitive.gray.900}", "$type": "color" },
+        "bg-surface": { "$value": "{color.primitive.gray.800}", "$type": "color" },
+        "bg-surface-sunken": { "$value": "#141211", "$type": "color" },
+        "bg-inverse": { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "bg-overlay-scrim": { "$value": "rgba(0,0,0,0.64)", "$type": "color" },
+        "text-primary": { "$value": "{color.primitive.gray.50}", "$type": "color" },
+        "text-secondary": { "$value": "{color.primitive.gray.300}", "$type": "color" },
+        "text-tertiary": { "$value": "{color.primitive.gray.400}", "$type": "color" },
+        "text-disabled": { "$value": "{color.primitive.gray.600}", "$type": "color" },
+        "text-on-brand": { "$value": "{color.primitive.gray.0}", "$type": "color" },
+        "text-link": { "$value": "#6FA6F5", "$type": "color" },
+        "border-default": { "$value": "{color.primitive.gray.700}", "$type": "color" },
+        "border-strong": { "$value": "{color.primitive.gray.500}", "$type": "color" },
+        "border-focus": { "$value": "#6FA6F5", "$type": "color" },
+        "brand-primary": { "$value": "{color.primitive.crimson.400}", "$type": "color" },
+        "brand-primary-hover": { "$value": "{color.primitive.crimson.300}", "$type": "color" },
+        "brand-primary-active": { "$value": "{color.primitive.crimson.200}", "$type": "color" },
+        "brand-subtle-bg": { "$value": "rgba(191,0,0,0.16)", "$type": "color" },
+        "success": { "$value": "#4CAF6B", "$type": "color" },
+        "success-bg": { "$value": "rgba(30,142,62,0.16)", "$type": "color" },
+        "warning": { "$value": "#E0A438", "$type": "color" },
+        "warning-bg": { "$value": "rgba(184,117,3,0.18)", "$type": "color" },
+        "error": { "$value": "#E8703F", "$type": "color" },
+        "error-bg": { "$value": "rgba(214,73,31,0.18)", "$type": "color" },
+        "info": { "$value": "#6FA6F5", "$type": "color" },
+        "info-bg": { "$value": "rgba(20,98,201,0.18)", "$type": "color" }
+      }
+    }
+  },
+  "typography": {
+    "font": {
+      "ui": { "$value": "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif", "$type": "fontFamily" },
+      "data": { "$value": "'Roboto Mono', 'SFMono-Regular', Menlo, monospace", "$type": "fontFamily" }
+    },
+    "scale": {
+      "display": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "28px", "fontWeight": "700", "lineHeight": "1.3" }, "$type": "typography" },
+      "h1": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.4" }, "$type": "typography" },
+      "h2": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "20px", "fontWeight": "700", "lineHeight": "1.4" }, "$type": "typography" },
+      "h3": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "17px", "fontWeight": "600", "lineHeight": "1.5" }, "$type": "typography" },
+      "body-l": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "16px", "fontWeight": "400", "lineHeight": "1.7" }, "$type": "typography" },
+      "body": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "15px", "fontWeight": "400", "lineHeight": "1.7" }, "$type": "typography" },
+      "body-s": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "13px", "fontWeight": "400", "lineHeight": "1.6" }, "$type": "typography" },
+      "caption": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "12px", "fontWeight": "500", "lineHeight": "1.5", "letterSpacing": "0.01em" }, "$type": "typography" },
+      "overline": { "$value": { "fontFamily": "{typography.font.ui}", "fontSize": "11px", "fontWeight": "600", "lineHeight": "1.4", "letterSpacing": "0.06em" }, "$type": "typography" },
+      "data-l": { "$value": { "fontFamily": "{typography.font.data}", "fontSize": "24px", "fontWeight": "700", "lineHeight": "1.3" }, "$type": "typography" },
+      "data": { "$value": { "fontFamily": "{typography.font.data}", "fontSize": "15px", "fontWeight": "500", "lineHeight": "1.6" }, "$type": "typography" }
+    }
+  },
+  "spacing": {
+    "1": { "$value": "4px", "$type": "dimension" }, "2": { "$value": "8px", "$type": "dimension" },
+    "3": { "$value": "12px", "$type": "dimension" }, "4": { "$value": "16px", "$type": "dimension" },
+    "5": { "$value": "24px", "$type": "dimension" }, "6": { "$value": "32px", "$type": "dimension" },
+    "7": { "$value": "48px", "$type": "dimension" }, "8": { "$value": "64px", "$type": "dimension" }
+  },
+  "radius": {
+    "sm": { "$value": "4px", "$type": "dimension" }, "md": { "$value": "8px", "$type": "dimension" },
+    "lg": { "$value": "12px", "$type": "dimension" }, "xl": { "$value": "16px", "$type": "dimension" },
+    "full": { "$value": "999px", "$type": "dimension" }
+  },
+  "shadow": {
+    "xs": { "$value": [{ "color": "rgba(28,26,25,0.06)", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px" }], "$type": "shadow" },
+    "s": { "$value": [{ "color": "rgba(28,26,25,0.08)", "offsetX": "0px", "offsetY": "2px", "blur": "6px", "spread": "0px" }], "$type": "shadow" },
+    "m": { "$value": [{ "color": "rgba(28,26,25,0.10)", "offsetX": "0px", "offsetY": "6px", "blur": "16px", "spread": "0px" }], "$type": "shadow" },
+    "l": { "$value": [{ "color": "rgba(28,26,25,0.14)", "offsetX": "0px", "offsetY": "12px", "blur": "32px", "spread": "0px" }], "$type": "shadow" },
+    "xl": { "$value": [{ "color": "rgba(28,26,25,0.18)", "offsetX": "0px", "offsetY": "24px", "blur": "56px", "spread": "0px" }], "$type": "shadow" }
+  },
+  "border": {
+    "width": {
+      "hairline": { "$value": "1px", "$type": "dimension" }, "default": { "$value": "1px", "$type": "dimension" },
+      "thick": { "$value": "2px", "$type": "dimension" }, "focus": { "$value": "2px", "$type": "dimension" }
+    }
+  },
+  "icon": {
+    "size": { "sm": { "$value": "16px", "$type": "dimension" }, "md": { "$value": "20px", "$type": "dimension" }, "lg": { "$value": "24px", "$type": "dimension" } },
+    "stroke": { "$value": "2px", "$type": "dimension" }
+  },
+  "motion": {
+    "duration": {
+      "instant": { "$value": "100ms", "$type": "duration" }, "fast": { "$value": "150ms", "$type": "duration" },
+      "base": { "$value": "200ms", "$type": "duration" }, "slow": { "$value": "300ms", "$type": "duration" }
+    },
+    "easing": {
+      "standard": { "$value": "cubic-bezier(0.2, 0.8, 0.2, 1)", "$type": "cubicBezier" },
+      "emphasized": { "$value": "cubic-bezier(0.3, 0, 0.1, 1)", "$type": "cubicBezier" }
+    }
+  },
+  "breakpoint": {
+    "sm": { "$value": "375px", "$type": "dimension" }, "md": { "$value": "768px", "$type": "dimension" },
+    "lg": { "$value": "1024px", "$type": "dimension" }, "xl": { "$value": "1280px", "$type": "dimension" },
+    "xxl": { "$value": "1440px", "$type": "dimension" }
+  }
+}</pre>
+      <div class="copytoast" id="copytoast">JSONをコピーしました</div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  function setTheme(mode){
+    document.documentElement.setAttribute('data-theme', mode);
+    document.getElementById('theme-light').setAttribute('aria-pressed', String(mode==='light'));
+    document.getElementById('theme-dark').setAttribute('aria-pressed', String(mode==='dark'));
+  }
+
+  function copyTokens(){
+    var text = document.getElementById('token-json').innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      var t = document.getElementById('copytoast');
+      t.classList.add('show');
+      setTimeout(function(){ t.classList.remove('show'); }, 2200);
+    });
+  }
+
+  function downloadTokens(){
+    var text = document.getElementById('token-json').innerText;
+    var blob = new Blob([text], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'rakuten-pay-merchant-design-tokens.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  }
+
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+    var targets = links.map(function(l){ return document.querySelector(l.getAttribute('href')); }).filter(Boolean);
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          var id = '#' + entry.target.id;
+          links.forEach(function(l){ l.classList.toggle('active', l.getAttribute('href') === id); });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    targets.forEach(function(t){ io.observe(t); });
+  })();
+</script>
